@@ -1,0 +1,60 @@
+{
+    "version": "0.2.0",
+    "configurations": [{
+            "type": "fs-uae-run",
+            "request": "launch",
+            "name": "Run",
+            "buildWorkspace": true,
+            "emulator": "${workspaceFolder}/bin/fs-uae",
+            "windows": {
+                "emulator": "${workspaceFolder}/bin/fs-uae.exe",
+            },
+            "osx": {
+                "emulator": "${workspaceFolder}/bin/fs-uae",
+            },
+            "linux": {
+                "emulator": "${workspaceFolder}/bin/fs-uae",
+            },
+            "emulatorWorkingDir": "${workspaceFolder}/bin",
+            "options": [
+                "--chip_memory=1024",
+                "--hard_drive_0=${workspaceFolder}/fs-uae/hd0",
+                "--joystick_port_0=XInput",
+                "--amiga_model=A1200",
+                "--slow_memory=1792"
+            ]
+        },
+        {
+            "type": "fs-uae",
+            "request": "launch",
+            "name": "Debug",
+            "stopOnEntry": false,
+            "serverName": "localhost",
+            "serverPort": 6860,
+            "trace": false,
+            "startEmulator": true,
+            "buildWorkspace": true,
+            "windows": {
+                "emulator": "${workspaceFolder}/bin/fs-uae.exe",
+            },
+            "osx": {
+                "emulator": "${workspaceFolder}/bin/fs-uae",
+            },
+            "linux": {
+                "emulator": "${workspaceFolder}/bin/fs-uae",
+            },
+            "emulatorWorkingDir": "${workspaceFolder}/bin",
+            "program": "${workspaceFolder}/fs-uae/hd0/gencop",
+            "options": [
+                "--chip_memory=1024",
+                "--hard_drive_0=${workspaceFolder}/fs-uae/hd0",
+                "--joystick_port_0=XInput",
+                "--amiga_model=A1200",
+                "--slow_memory=1792",
+                "--remote_debugger=200",
+                "--use_remote_debugger=true",
+                "--automatic_input_grab=0"
+            ]
+        }
+    ]
+}
