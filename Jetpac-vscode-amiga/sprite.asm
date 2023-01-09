@@ -1,17 +1,17 @@
-;start
-
-     jmp        begin
-     INCLUDE    input.asm
-     INCLUDE    jetman.asm
+    section flashtro,code_c
+        
+    jmp        begin
+    
+    INCLUDE    Dev:Jetpac/input.asm
+    INCLUDE    Dev:Jetpac/jetman.asm
 
 begin:
-     move.l     copperBuffer,d0               ; Required ?
-     move.l     d0,$dff080                    ; Required ?
+    move.l 4.w,a6                             ; Get base of exec lib
+    lea gfxName(pc),a1                        ; Adress of gfxlib string to a1
+    jsr -408(a6)                              ; Call OpenLibrary()
+    move.l d0,gfxBase                         ; Save base of graphics.library
+    move.l #copperBuffer,$dff080              ; Set new copperlist
      move.w     #$4000,$dff09a
-
-;    or.b    #%10000000,$bfd100	; Required ?
-;    and.b   #%10000111,$bfd100	; Required ?
-
 ;     move.w     #$01a0,$dff096
      move.w     #$3200,$dff100
      move.w     #$0000,$dff102
@@ -20,23 +20,20 @@ begin:
      move.w     #0,$dff10a
      move.w     #$2c81,$dff08e                ; DIWStart
      move.w     #$f4c1,$dff090                ; DIWStop
- ;    move.w     #$38c1,$dff090
      move.w     #$0038,$dff092
      move.w     #$00d0,$dff094
-     move.w     $dff088,d0                    ; Required ?
+     move.w     $dff088,d0
 ;     move.w     #$81a0,$dff096
      move.w     #$81ff,$dff096
 ;     bsr        extractLevelBitplaneInformation
 
-
 mainloop:
-
   ; Check if either mouse button/joystick 1 or 2 pressed, if so exit
      btst.b     #6,$bfe001
 ;  bne        mainloop
      beq        exit
-;	btst.b #7,$bfe001
-;	beq exit
+;   btst.b #7,$bfe001
+;   beq exit
 
 wait:
      move.l     $dff004,d0
@@ -64,12 +61,13 @@ wait2:
 
 continue:
      bsr        checkJoystick
-;;	bsr animateSprite
-;	bsr updateJetman
+;;  bsr animateSprite
+;   bsr updateJetman
 ;    bsr movesprite
 
      bsr        doublebuffer
      bra        mainloop
+
 exit
      move.w     #$0080,$dff096
      move.l     $04,a6
@@ -77,7 +75,14 @@ exit
      move.l     38(a1),$dff080
      move.w     #$8080,$dff096
      move.w     #$c000,$dff09a
+     moveq      #0,d0
      rts
+
+gfxName:    dc.b    "graphics.library", 0, 0
+gfxBase:    dc.l    0
+oldView:    dc.l    0
+oldInt:     dc.w    0
+oldDMA:     dc.w    0
 
 ; Animation table
 walkingSpriteAnimation:
@@ -119,9 +124,9 @@ animateSpriteWalking:
      lea        sprite5,a5
      move.l     walkingSpriteAnimation,a0
      move.l     a0,d0
-;	move.l 0(a0),d0
-;	move.l 2(a0),d0
-;	add.l counter(a0),d0
+;   move.l 0(a0),d0
+;   move.l 2(a0),d0
+;   add.l counter(a0),d0
      add.l      counter,d0
      add.l      #$64,counter
      cmp.l      #$64*4,counter
@@ -130,7 +135,7 @@ animateSpriteWalking:
 done:
      move.l     d0,animationFrame
 delayReturn:
-;	jmp animateSprite
+;   jmp animateSprite
      rts
 
 
@@ -153,10 +158,11 @@ usecopper1:
 
 storeSelection:
      move.l     a6,copperBuffer
+     move.l     #$01060000,(a6)+             ; AGA compatible
+     move.l     #$01fc0000,(a6)+
 
-	;sprite2
-;     move.l     animationFrame,a1            ; Store the address of the Jetman data into a1
-     lea.l      animationFrame,a1
+    ;sprite2
+     lea.l      animationFrame,a1            ; Store the address of the Jetman data into a1
      move.l     (a1),a2
      move.b     m_yTop,(a2)
      move.b     m_x,1(a2)
@@ -166,7 +172,7 @@ storeSelection:
 ;     add.b      d1,1(a2)
 ;add.b m_y,1(a1)
 ;add.b mx+#$e,2(a1)
-;	lea.l   animationFrame,a1	; Store the address of the sprite data into a1
+;   lea.l   animationFrame,a1                 ; Store the address of the sprite data into a1
      move.w     #$0122,(a6)+                  ; Add the sprite 0 High Word to the copper list
      move.l     (a1),d1                       ; Store the address in a1 into d1
      move.w     d1,(a6)+                      ; Copy the LOW byte address into the copper list
@@ -216,8 +222,6 @@ storeSelection:
      move.w     #$0134,(a6)+                  ; Add the sprite 0 Low Word to the copper list
      swap       d1                            ; Swap the byte order in d1
      move.w     d1,(a6)+                      ; Copy the HIGH byte address into the copper list
-
-
 
      move.l     #$2c01fffe,(a6)+
      move.l     #$01002200,(a6)+              ; Bitplane control
@@ -341,9 +345,9 @@ frame:
 screen:
      blk.b      10240,0
 
-     include    jetman_data.asm
-     include    meteor.asm
-     include    rocket_data.asm
+     include    Dev:Jetpac/jetman_data.asm
+     include    Dev:Jetpac/meteor.asm
+     include    Dev:Jetpac/rocket_data.asm
 
 copperBuffer:
      dc.l       0
@@ -360,6 +364,6 @@ copper2:
 
 background:
 ;     incbin     "background.iff"
-     incbin     "background_224x224.raw"
-;     incbin     "SCREEN"
+     incbin     "Dev:Jetpac/background_224x224.raw"
+
      end
