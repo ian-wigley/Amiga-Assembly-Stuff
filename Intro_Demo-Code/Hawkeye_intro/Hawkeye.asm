@@ -1,6 +1,9 @@
+;APS00000000000000000000000000000000000000000000000000000000000000000000000000000000
 ;
 ;    ***********************************;
 ;    * Hawkeye Intro
+;    ***********************************;
+;    *         Written in 1988.        *;
 ;    ***********************************;
 
     section flashtro,code_c
@@ -8,13 +11,16 @@
 start:  
     move.l 4.w,a6           ; Get base of exec lib
     lea gfxlib(pc),a1       ; Adress of gfxlib string to a1
-    jsr -408(a6)            ; Call OpenLibrary()
+    jsr -408(a6)             ; Call OpenLibrary()
     move.l d0,gfxbase       ; Save base of graphics.library
-    move.l #copper,$dff080  ; Set new copperlist
+    bsr configureBitPlanes
+	move.l #copper,$dff080  ; Set new copperlist
     
 rast: 
     cmp.b #$ff,$00dff006
     bne rast
+	bsr scroll
+	bsr fader
 
 mouse:  
     btst #6,$bfe001         ; Left mouse clicked ?
@@ -32,18 +38,98 @@ mouse:
 gfxlib:     dc.b    "graphics.library",0,0
 gfxbase:    dc.l    0
 
+configureBitPlanes:
+
+    lea.l image,a1
+    lea.l bplOneHigh,a3     ; Get a pointer to the $e0 address
+    lea.l bplOneLow,a2      ; Get a pointer to the $e2 address
+    move.l a1,d1            ; Copy pointer address into d1
+    move.w d1,(a2)          ; Copy the lower word into a2 ($e2 address)
+    move.w (a2),d2          ; Copy the data from the pointer into d3
+    swap d1                 ; Flip d1
+    move.w d1,(a3)          ; Copy the lower word into a2 ($e0 address)
+    move.w (a3),d3          ; Copy the data from the pointer into d3
+
+    lea.l image+$2800,a1
+    lea.l bplTwoHigh,a3     ; Get a pointer to the $e4 address
+    lea.l bplTwoLow,a2      ; Get a pointer to the $e6 address
+    move.l a1,d1            ; Copy pointer address into d1
+    move.w d1,(a2)          ; Copy the lower word into a2 ($e4 address)
+    move.w (a2),d2          ; Copy the data from the pointer into d3
+    swap d1                 ; Flip d1
+    move.w d1,(a3)          ; Copy the lower word into a2 ($e6 address)
+    move.w (a3),d3          ; Copy the data from the pointer into d3
+
+    lea.l image+$5000,a1
+    lea.l bplThreeHigh,a3   ; Get a pointer to the $e8 address
+    lea.l bplThreeLow,a2    ; Get a pointer to the $ea address
+    move.l a1,d1            ; Copy pointer address into d1
+    move.w d1,(a2)          ; Copy the lower word into a2 ($e8 address)
+    move.w (a2),d2          ; Copy the data from the pointer into d3
+    swap d1                 ; Flip d1
+    move.w d1,(a3)          ; Copy the lower word into a2 ($ea address)
+    move.w (a3),d3          ; Copy the data from the pointer into d3
+
+    lea.l image+$7800,a1
+    lea.l bplFourHigh,a3    ; Get a pointer to the $ec address
+    lea.l bplFourLow,a2     ; Get a pointer to the $ee address
+    move.l a1,d1            ; Copy pointer address into d1
+    move.w d1,(a2)          ; Copy the lower word into a2 ($ec address)
+    move.w (a2),d2          ; Copy the data from the pointer into d3
+    swap d1                 ; Flip d1
+    move.w d1,(a3)          ; Copy the lower word into a2 ($ee address)
+    move.w (a3),d3          ; Copy the data from the pointer into d3
+
+    lea.l image+$a000,a1
+    lea.l bplFiveHigh,a3    ; Get a pointer to the $f0 address
+    lea.l bplFiveLow,a2     ; Get a pointer to the $f2 address
+    move.l a1,d1            ; Copy pointer address into d1
+    move.w d1,(a2)          ; Copy the lower word into a2 ($f0 address)
+    move.w (a2),d2          ; Copy the data from the pointer into d3
+    swap d1                 ; Flip d1
+    move.w d1,(a3)          ; Copy the lower word into a2 ($f2 address)
+    move.w (a3),d3          ; Copy the data from the pointer into d3
+    rts
+
+colours:
+	dc.l colourDataStart
+
 ; Colour Bar fader ($0006806A)
 fader:
-    lea.l colourData,a0
-    move.w (a0),d0
-loop:
-    move.w (a0),(a0)+
+    lea.l colours,a0
+    move.w (a0)+,d0
     cmpa.l colourDataEnd,a0
-    bne.w loop
-    move.w (a0),barOne
-    move.w (a0),barTwo
-    move.w d0,(a0)
-    rts
+    bne continue
+	move.l colourDataStart,a0
+	rts
+continue:
+    move.w (d0),barOne
+    move.w (d0),barTwo	
+	move.l (a0)+,a0
+	rts
+	
+;loop:
+;    move.w (a0),(a0)+
+;    cmpa.l colourDataEnd,a0
+;    bne.w loop
+;    move.w (a0),barOne
+;    move.w (a0),barTwo
+;    move.w d0,(a0)
+;    rts
+
+;fader:
+;    lea.l colourDataStart,a0
+;    move.w (a0),d0
+;loop:
+;    move.w (a0),(a0)+
+;    cmpa.l colourDataEnd,a0
+;    bne.w loop
+;    move.w (a0),barOne
+;    move.w (a0),barTwo
+;    move.w d0,(a0)
+;    rts
+
+
 
 ; Colour data ($00068090)
 colourDataStart:
@@ -73,28 +159,62 @@ copper:
     
     dc.w $0096,$0020
     dc.w $0100,$5000
-
     dc.w $0102,$0000
     dc.w $0092,$0034
     dc.w $0094,$00cc
     dc.w $0108,$0000
     dc.w $010a,$0000
 
-    dc.w $00e0,$0003 
-    dc.w $00e2,$0ac0
-    dc.w $00e4,$0003
-    dc.w $00e6,$32c0
-    dc.w $00e8,$0003
-    dc.w $00ea,$5ac0
-    dc.w $00ec,$0003 
 
-    dc.w $00ee,$82c0
-    dc.w $00f0,$0003 
-    dc.w $00f2,$aac0
+;    dc.w $00e0,$0003 
+;    dc.w $00e2,$0ac0
+;    dc.w $00e4,$0003
+;    dc.w $00e6,$32c0
+;    dc.w $00e8,$0003
+;    dc.w $00ea,$5ac0
+;    dc.w $00ec,$0003 
+;    dc.w $00ee,$82c0
+;    dc.w $00f0,$0003 
+;    dc.w $00f2,$aac0
+
+    dc.w $00e0
+bplOneHigh:
+    dc.w $0000
+    dc.w $00e2
+bplOneLow:
+    dc.w $0000
+
+    dc.w $00e4
+bplTwoHigh:
+    dc.w $0000
+    dc.w $00e6
+bplTwoLow:
+    dc.w $0000
+
+    dc.w $00e8
+bplThreeHigh:
+    dc.w $0000
+    dc.w $00ea
+bplThreeLow:
+    dc.w $0000
+
+    dc.w $00ec
+bplFourHigh:
+    dc.w $0000
+    dc.w $00ee
+bplFourLow:
+    dc.w $0000
+
+    dc.w $00f0
+bplFiveHigh:
+    dc.w $0000
+    dc.w $00f2
+bplFiveLow:
+    dc.w $0000
 
     dc.w $008e,$2702
     dc.w $0090,$49c0
-    
+
     dc.w $0180,$0000
     dc.w $0182,$0222
     dc.w $0184,$0555
@@ -147,7 +267,7 @@ copper:
     
     dc.w $0a01,$fffe
 
-    dc.w $0180,
+    dc.w $0180
 barOne: 
     dc.w $0eee
 
@@ -388,5 +508,16 @@ text:
     dc.b    "      text restarts  ................          "
     dc.b    "                                               ",0
 
+bufleft:
+    dc.b 1
+switch:
+    dc.b 0,0
+
 wachrs:
-    incbin "wachr.raw"
+    incbin "Dev:Intro_Demo-Code/Hawkeye_intro/wachr.raw"
+	
+image:
+    incbin "Dev:Intro_Demo-Code/Hawkeye_intro/hawk.raw"
+
+screen:
+     blk.b      10240,0
