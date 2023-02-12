@@ -1,9 +1,9 @@
 ;
 ;    ***********************************;
-;
+;    * Hawkeye Intro
 ;    ***********************************;
 
-	section flashtro,code_c
+    section flashtro,code_c
 
 start:  
     move.l 4.w,a6           ; Get base of exec lib
@@ -49,23 +49,23 @@ loop:
 colourDataStart:
     dc.w $0ccc,$0bbb
     dc.w $0aaa,$0999
-	dc.w $0888,$0777
+    dc.w $0888,$0777
     dc.w $0666,$0555
     dc.w $0444,$0333
     dc.w $0222,$0111
     dc.w $0000,$0000
     dc.w $0111,$0222
-	dc.w $0333,$0444
-	dc.w $0555,$0666
-	dc.w $0777,$0888
+    dc.w $0333,$0444
+    dc.w $0555,$0666
+    dc.w $0777,$0888
     dc.w $0999,$0aaa
-	dc.w $0bbb,$0ccc
-	
-	dc.w $0ddd,$0eee
-	dc.w $0fff,$0eee
+    dc.w $0bbb,$0ccc
+
+    dc.w $0ddd,$0eee
+    dc.w $0fff,$0eee
     dc.w $0fff,$0eee
 colourDataEnd:
-	dc.w $0ddd,$0ddd
+    dc.w $0ddd,$0ddd
 
 ; Copper List ($000680CE)
 copper:
@@ -128,15 +128,15 @@ copper:
     dc.w $01ba,$0eef
     dc.w $01bc,$0d80
     dc.w $01be,$0fe0
-    
+
     dc.w $ffe1,$fffe
-    
+
     dc.w $01fe,$0000
     dc.w $0011,$fffe
     dc.w $0801,$fffe
     dc.w $0100,$0000
     dc.w $0901,$fffe
-    
+
     dc.w $008e,$2840
     dc.w $0090,$49e0
     dc.w $0092,$0020
@@ -146,15 +146,15 @@ copper:
     dc.w $010a,$0024
     
     dc.w $0a01,$fffe
-	
+
     dc.w $0180,
-barOne:	
-	dc.w $0eee
-	
+barOne: 
+    dc.w $0eee
+
     dc.w $0b01,$fffe
     dc.w $0180,$0000
     dc.w $0c01,$fffe
-    
+
     dc.w $0100
     dc.w $1000
     dc.w $0182
@@ -164,11 +164,11 @@ barOne:
     dc.w $0007
     dc.w $00e2
     dc.w $0000
-    
+
     dc.w $0d01,$ff00
     dc.w $0182,$0222
     dc.w $0e01,$fffe
-    
+
     dc.w $0180,$0000
     dc.w $0182,$0333
     dc.w $0f01,$ff00
@@ -183,12 +183,12 @@ barOne:
     dc.w $1101
     dc.w $ff00
     dc.w $0180
-    dc.w $0200,$0182            
-    dc.w $0666,$1201            
-    dc.w $ff00                  
-    dc.w $0180                  
-    dc.w $0300                  
-    dc.w $0182                  
+    dc.w $0200,$0182
+    dc.w $0666,$1201
+    dc.w $ff00
+    dc.w $0180
+    dc.w $0300
+    dc.w $0182
     dc.w $0777,$1301            
     dc.w $ff00                  
     dc.w $0180                  
@@ -245,7 +245,7 @@ barOne:
     dc.w $ff00
     dc.w $0180
     dc.w $0800
-	dc.w $0182
+    dc.w $0182
     dc.w $0ccc
     dc.w $1e01
     dc.w $ff00
@@ -257,38 +257,38 @@ barOne:
     dc.w $ff00
     dc.w $0180
     dc.w $0600
-	dc.w $0182,$0aaa
-	dc.w $2001,$ff00
-	dc.w $0180,$0500      
-    dc.w $0182      
-    dc.w $0999      
-    dc.w $2101      
-    dc.w $ff00      
-    dc.w $0180      
+    dc.w $0182,$0aaa
+    dc.w $2001,$ff00
+    dc.w $0180,$0500
+    dc.w $0182
+    dc.w $0999
+    dc.w $2101
+    dc.w $ff00
+    dc.w $0180
     dc.w $0400,$0182
-    dc.w $0888      
-    dc.w $2201      
-    dc.w $ff00      
-    dc.w $0180      
-    dc.w $0300      
-    dc.w $0182      
+    dc.w $0888
+    dc.w $2201
+    dc.w $ff00
+    dc.w $0180
+    dc.w $0300
+    dc.w $0182
     dc.w $0777,$2301
-    dc.w $ff00      
-    dc.w $0180      
+    dc.w $ff00
+    dc.w $0180
     dc.w $0200,$0182
     dc.w $0666,$2401
-    dc.w $ff00      
-    dc.w $0180      
-    dc.w $0100      
-    dc.w $0182      
-    dc.w $0555      
-    dc.w $2501      
-    dc.w $ff00      
-    dc.w $0180      
+    dc.w $ff00
+    dc.w $0180
+    dc.w $0100
+    dc.w $0182
+    dc.w $0555
+    dc.w $2501
+    dc.w $ff00
+    dc.w $0180
     dc.w $0000,$0182
     dc.w $0444,$2601
-    dc.w $ff00      
-    dc.w $0180      
+    dc.w $ff00
+    dc.w $0180
     dc.w $0000,$0182
     dc.w $0333,$2701
     dc.w $ff00
@@ -302,15 +302,15 @@ barOne:
     dc.w $0000,$2901
     dc.w $ff00
     dc.w $0180
-    dc.w $0000 
+    dc.w $0000
     dc.w $0100
     dc.w $0000
-	dc.w $2a01,$ff00
-	
+    dc.w $2a01,$ff00
+
     dc.w $0180
 barTwo:
     dc.w $0eee
-	
+
     dc.w $2b01,$ff00
     dc.w $2b01,$ff00
     dc.w $0180,$0000
@@ -384,7 +384,6 @@ ekschr:
     dc.b    "0123456789?!^:,.'()-/ ",0
 
 text:
-    dc.b    "      of the lost boys of the x-men presents 'the hawk eye demo'   coding by anzax, picture by marker, font by ?  neat tune taken from the force 242 music disk    mega thanks to mr. mega mind of dexion for teaching me more about this excellant machine      right, mega sorry to all my contacts who have encountered slow sendings recently, but because the stupid lamers at the post office went on strike and i have been on holiday recently....  most sendings have been delayed. sorry but i'm trying to resolve the situation......    this demo was written back in august but i have held it back until my proper demo ++lost demo++ was nearing completion.  so the following scroll text is well out of date !!!                   pcw show time is here again !! and guess who ain't going ?!!  yeah me !!!!  i am currently encountering the buy anzax an xr3i fund !  all contributions are welcomed !!!	  right our greetings and mega yo'z fly out to :-  academy ...   bcs ...   dbs ...   defjam ...   dexion ...   dominators ...   election ...   flashlight design crew ...   future brains ...   l.a.c.c. ...   hotline ...  ian and mic ...   ikari ...   ipec elite ...   jet speed ...   jungle command ...   network ...   next generation ...   north star ...   nfc ...   oks import division ...   oracle ...   orion ...   pulsar/nato ...   quoram ...   red sector ...   science 451 ...   silents ...   softkiller crew ...   squadron ...   stack ...   steel pulse ...   tartan army ...   team-x ...   the chip duo int ...   the two amigos ...   tgm-crew ...   transcom ...   trilogy ...   vortex 42 ...   wierd science ...   write to anzax for the latest amiga wares ....  so write to anzax (ian)   27 garth crescent, alvaston, derby. de2 ogx.  england.   bloody hell !!!!  i am really fed up with typing this scroll text....   this is the 3rd time i have had to retype this !!!!  stupid meditation and read/write errors tend to make me very angry when i loose the whole source code for this demo !!!!         anyway contact me !!!!  heres my address again .....    ian,27 garth crescent,alvaston,derby.de2 ogx.england.   again ?!  ian,27 garth crescent,alvaston,derby.de2 ogx.england.    so now there is no excuse not to contact us !!!!!     let me introduce our team ....      the lost boys of the x-men are :-  acid (swapper and founder), anzax (coder,swapper,graphix), dizzy (mini swapper and demo disk management), marker (swapper and graphics artist)  .................                  i am fed up now !!!  so i'll pop off and get some copying done and play that great r-type/io/nemisis derevitive called katakis....   thank god ackerlight decided to include a trainer on there crack !!     so long guys !!   and remember to contact us for the latest wares .......                     this following text is upto date 15/10/88      now then i've altered the greets to include all contacts to date.  i know the greets are in a-z fashion, but the ++lost demo++ is in true z-a order !!     cu all later ........ (signed anzax in oct '88)                                        "
     dc.b    "      press left mouse button to exit          "
     dc.b    "      text restarts  ................          "
     dc.b    "                                               ",0
