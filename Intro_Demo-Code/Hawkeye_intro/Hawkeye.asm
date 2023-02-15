@@ -1,28 +1,28 @@
 ;APS00000000000000000000000000000000000000000000000000000000000000000000000000000000
 ;
 ;    ***********************************;
-;    * Hawkeye Intro
+;    *          Hawkeye Intro
 ;    ***********************************;
 ;    *         Written in 1988.        *;
 ;    ***********************************;
 
     section flashtro,code_c
 
-start:  
+start: 
     move.l 4.w,a6           ; Get base of exec lib
     lea gfxlib(pc),a1       ; Adress of gfxlib string to a1
-    jsr -408(a6)             ; Call OpenLibrary()
+    jsr -408(a6)            ; Call OpenLibrary()
     move.l d0,gfxbase       ; Save base of graphics.library
     bsr configureBitPlanes
-	move.l #copper,$dff080  ; Set new copperlist
-    
-rast: 
+    move.l #copper,$dff080  ; Set new copperlist
+
+rast:
     cmp.b #$ff,$00dff006
     bne rast
-	bsr scroll
-	bsr fader
+    bsr scroll
+    bsr fader
 
-mouse:  
+mouse:
     btst #6,$bfe001         ; Left mouse clicked ?
     bne.b rast              ; No, continue loop!
 ;    bsr stop_muzak
@@ -89,74 +89,78 @@ configureBitPlanes:
     swap d1                 ; Flip d1
     move.w d1,(a3)          ; Copy the lower word into a2 ($f2 address)
     move.w (a3),d3          ; Copy the data from the pointer into d3
+
+;    lea.l screen,a1
+;    lea.l chrBitPlaneOneHigh,a3    ; Get a pointer to the $f0 address
+;    lea.l chrBitPlaneOneLow,a2     ; Get a pointer to the $f2 address
+;    move.l a1,d1            ; Copy pointer address into d1
+;    move.w d1,(a2)          ; Copy the lower word into a2 ($f0 address)
+;    move.w (a2),d2          ; Copy the data from the pointer into d3
+;    swap d1                 ; Flip d1
+;    move.w d1,(a3)          ; Copy the lower word into a2 ($f2 address)
+;    move.w (a3),d3          ; Copy the data from the pointer into d3
     rts
 
 colours:
-	dc.l colourDataStart
+    dc.l colourDataStart
+count:
+    dc.l 0,0
 
 ; Colour Bar fader ($0006806A)
 fader:
-    lea.l colours,a0
-    move.w (a0)+,d0
-    cmpa.l colourDataEnd,a0
-    bne continue
-	move.l colourDataStart,a0
-	rts
-continue:
-    move.w (d0),barOne
-    move.w (d0),barTwo	
-	move.l (a0)+,a0
-	rts
-	
-;loop:
-;    move.w (a0),(a0)+
-;    cmpa.l colourDataEnd,a0
-;    bne.w loop
-;    move.w (a0),barOne
-;    move.w (a0),barTwo
-;    move.w d0,(a0)
-;    rts
-
-;fader:
-;    lea.l colourDataStart,a0
-;    move.w (a0),d0
-;loop:
-;    move.w (a0),(a0)+
-;    cmpa.l colourDataEnd,a0
-;    bne.w loop
-;    move.w (a0),barOne
-;    move.w (a0),barTwo
-;    move.w d0,(a0)
-;    rts
-
-
+    clr.l d0
+    move.l count,d0
+    move.l colours,a0
+    move.w 0(a0,d0.l),barOne
+    move.w 0(a0,d0.l),barTwo
+    move.l count,d0
+    cmp #$3c,d0
+    beq end
+    addq.l #2,d0
+    move.l d0,count
+    rts
+end:
+    move.l #0,count
+    rts
 
 ; Colour data ($00068090)
 colourDataStart:
-    dc.w $0ccc,$0bbb
-    dc.w $0aaa,$0999
-    dc.w $0888,$0777
-    dc.w $0666,$0555
-    dc.w $0444,$0333
-    dc.w $0222,$0111
-    dc.w $0000,$0000
-    dc.w $0111,$0222
-    dc.w $0333,$0444
-    dc.w $0555,$0666
-    dc.w $0777,$0888
-    dc.w $0999,$0aaa
-    dc.w $0bbb,$0ccc
-
-    dc.w $0ddd,$0eee
-    dc.w $0fff,$0eee
-    dc.w $0fff,$0eee
-colourDataEnd:
+    dc.w $0fff,$0fff
+    dc.w $0eee,$0eee
     dc.w $0ddd,$0ddd
+    dc.w $0ccc,$0ccc
+    dc.w $0bbb,$0bbb
+    dc.w $0aaa,$0aaa
+    dc.w $0999,$0999
+    dc.w $0888,$0888
+    dc.w $0777,$0777
+    dc.w $0666,$0666
+    dc.w $0555,$0555
+    dc.w $0444,$0444
+    dc.w $0333,$0333
+    dc.w $0222,$0222
+    dc.w $0111,$0111
+    dc.w $0000,$0000
+    dc.w $0111,$0111
+    dc.w $0222,$0222
+    dc.w $0333,$0333
+    dc.w $0444,$0444
+    dc.w $0555,$0555
+    dc.w $0666,$0666
+    dc.w $0777,$0777
+    dc.w $0888,$0888
+    dc.w $0999,$0999
+    dc.w $0aaa,$0aaa
+    dc.w $0bbb,$0bbb
+    dc.w $0ccc,$0ccc
+    dc.w $0ddd,$0ddd
+    dc.w $0eee,$0eee
+    dc.w $0fff,$0fff
 
 ; Copper List ($000680CE)
 copper:
     dc.w $0106,$0000,$01fc,$0000 ; AGA compatible
-    
+
     dc.w $0096,$0020
     dc.w $0100,$5000
     dc.w $0102,$0000
@@ -164,18 +168,6 @@ copper:
     dc.w $0094,$00cc
     dc.w $0108,$0000
     dc.w $010a,$0000
-
-
-;    dc.w $00e0,$0003 
-;    dc.w $00e2,$0ac0
-;    dc.w $00e4,$0003
-;    dc.w $00e6,$32c0
-;    dc.w $00e8,$0003
-;    dc.w $00ea,$5ac0
-;    dc.w $00ec,$0003 
-;    dc.w $00ee,$82c0
-;    dc.w $00f0,$0003 
-;    dc.w $00f2,$aac0
 
     dc.w $00e0
 bplOneHigh:
@@ -281,8 +273,10 @@ barOne:
     dc.w $0111
 
     dc.w $00e0
+chrBitPlaneOneHigh:
     dc.w $0007
     dc.w $00e2
+chrBitPlaneOneLow:
     dc.w $0000
 
     dc.w $0d01,$ff00
@@ -441,61 +435,62 @@ barTwo:
 ; Blitter Scroll ($00068392)
 scroll: 
     movem.l d0-d6/a0-a6,-(a7)
-    btst    #$00,switch
+    btst #$00,switch
     beq rollon
     rts
 rollon: 
     lea $dff000,a0
-    move.l  #$70000,$50(a0)
-    move.l  #$6fffe,$54(a0)
-    clr.l   $64(a0)
-    move.l  #$ffffffff,$44(a0)
-    move.w  #$c9f0,$40(a0)
-    clr.w   $42(a0)
-    move.w  #$0cd7,$58(a0)
+    move.l #$70000,$50(a0)
+    move.l #$6fffe,$54(a0)
+    clr.l $64(a0)
+    move.l #$ffffffff,$44(a0)
+    move.w #$c9f0,$40(a0)
+    clr.w $42(a0)
+    move.w #$0cd7,$58(a0)
 bw: 
-    btst    #$0006,$02(a0)
-    bne     bw
+    btst #$0006,$02(a0)
+    bne bw
 
-    sub.b   #1,bufleft
-    bne     scrlend
-    move.b   #8,bufleft
-    clr.l   d0
-    clr.l   d1
-    lea     wachrs,a2
-    lea     ekschr,a3
-    lea     $70030,a4
-    move.l  textadr,a1
+    sub.b #1,bufleft
+    bne scrlend
+    move.b #8,bufleft
+    clr.l d0
+    clr.l d1
+    lea wachrs,a2
+    lea ekschr,a3
+    lea $70030,a4
+
+    move.l textadr,a1
     move.b (a1)+,d1
-    cmpi.b  #$23,(a1)
+    cmpi.b #$23,(a1)
     bne eksloop
-    move.b  #$1,switch
+    move.b #$1,switch
 eksloop:
-    cmp.b   (a3)+,d1
-    beq     found
-    addq    #1,d0
-    tst.b   (a3)
-    bne     eksloop
-    bra     notf
+    cmp.b (a3)+,d1
+    beq found
+    addq #1,d0
+    tst.b (a3)
+    bne eksloop
+    bra notf
 found:
-    add.b   #123,d0
-    move.b  d0,d1
+    add.b #123,d0
+    move.b d0,d1
 notf:
-    sub.b   #97,d1 
-    muls    #112,d1 
-    add.l   d1,a2
-    move.w  #29,d0
+    sub.b #97,d1 
+    muls #112,d1 
+    add.l d1,a2
+    move.w #29,d0
 scrloop:
-    move.l  (a2)+,(a4)
-    add.l   #84,a4
-    dbf     d0,scrloop
-    tst.b   (a1)
-    bne     qq
-    lea     text,a1
+    move.l (a2)+,(a4)
+    add.l #84,a4
+    dbf d0,scrloop
+    tst.b (a1)
+    bne qq
+    lea text,a1
 qq: 
-    move.l  a1,textadr
+    move.l a1,textadr
 scrlend:
-    movem.l    (a7)+,d0-d6/a0-a6
+    movem.l (a7)+,d0-d6/a0-a6
     rts
 
 textadr:
@@ -515,9 +510,9 @@ switch:
 
 wachrs:
     incbin "Dev:Intro_Demo-Code/Hawkeye_intro/wachr.raw"
-	
+    
 image:
     incbin "Dev:Intro_Demo-Code/Hawkeye_intro/hawk.raw"
 
 screen:
-     blk.b      10240,0
+     blk.l 20480,0
