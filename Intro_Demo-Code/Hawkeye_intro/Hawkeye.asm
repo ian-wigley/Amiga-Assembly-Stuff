@@ -1,12 +1,11 @@
-;APS00000000000000000000000000000000000000000000000000000000000000000000000000000000
 ;
 ;    ***********************************;
-;    *          Hawkeye Intro
+;    *          Hawkeye Intro          *;
 ;    ***********************************;
 ;    *         Written in 1988.        *;
 ;    ***********************************;
 
-    section flashtro,code_c
+    section text,code_c
 
 start:
     move.l 4.w,a6           ; Get base of exec lib
@@ -22,9 +21,14 @@ rast:
     bsr scroll
     bsr fader
 
-mouse:
+    move.b $bfec01,d0       ; Check if the escape Key
+    eor.b #$ff,d0           ; has been pressed
+    ror.b #1,d0
+    cmp.b #$45,d0           ; No, continue
+    beq.s exit
     btst #6,$bfe001         ; Left mouse clicked ?
     bne.b rast              ; No, continue loop!
+exit:
 ;    bsr stop_muzak
     move.l gfxbase(pc),a1   ; Base of graphics.library to a1
     move.l 38(a1),$dff080   ; Restore old copperlist
@@ -160,7 +164,6 @@ colourDataStart:
 ; Copper List ($000680CE)
 copper:
     dc.w $0106,$0000,$01fc,$0000 ; AGA compatible
-
     dc.w $0096,$0020
     dc.w $0100,$5000
     dc.w $0102,$0000
@@ -168,49 +171,41 @@ copper:
     dc.w $0094,$00cc
     dc.w $0108,$0000
     dc.w $010a,$0000
-
     dc.w $00e0
 bplOneHigh:
     dc.w $0000
     dc.w $00e2
 bplOneLow:
     dc.w $0000
-
     dc.w $00e4
 bplTwoHigh:
     dc.w $0000
     dc.w $00e6
 bplTwoLow:
     dc.w $0000
-
     dc.w $00e8
 bplThreeHigh:
     dc.w $0000
     dc.w $00ea
 bplThreeLow:
     dc.w $0000
-
     dc.w $00ec
 bplFourHigh:
     dc.w $0000
     dc.w $00ee
 bplFourLow:
     dc.w $0000
-
     dc.w $00f0
 bplFiveHigh:
     dc.w $0000
     dc.w $00f2
 bplFiveLow:
     dc.w $0000
-
     dc.w $008e,$2702
     dc.w $0090,$49c0
-
     dc.w $0180,$0000
     dc.w $0182,$0222
     dc.w $0184,$0555
-
     dc.w $0186,$0777
     dc.w $0188,$0999
     dc.w $018a,$0ccc
@@ -240,197 +235,128 @@ bplFiveLow:
     dc.w $01ba,$0eef
     dc.w $01bc,$0d80
     dc.w $01be,$0fe0
-
     dc.w $ffe1,$fffe
-
     dc.w $01fe,$0000
     dc.w $0011,$fffe
     dc.w $0801,$fffe
     dc.w $0100,$0000
     dc.w $0901,$fffe
-
     dc.w $008e,$2840
     dc.w $0090,$49e0
     dc.w $0092,$0020
     dc.w $0094,$01e0
-
     dc.w $0108,$0024
     dc.w $010a,$0024
-
     dc.w $0a01,$fffe
-
     dc.w $0180
 barOne:
     dc.w $0eee
-
     dc.w $0b01,$fffe
     dc.w $0180,$0000
     dc.w $0c01,$fffe
-
-    dc.w $0100
-    dc.w $1000
-    dc.w $0182
-    dc.w $0111
-
+    dc.w $0100,$1000
+    dc.w $0182,$0111
     dc.w $00e0
 chrBitPlaneOneHigh:
     dc.w $0007
     dc.w $00e2
 chrBitPlaneOneLow:
     dc.w $0000
-
     dc.w $0d01,$ff00
     dc.w $0182,$0222
     dc.w $0e01,$fffe
-
     dc.w $0180,$0000
     dc.w $0182,$0333
     dc.w $0f01,$ff00
     dc.w $0180,$0000
     dc.w $0182,$0444
     dc.w $1001,$fffe
-
-    dc.w $0180
-    dc.w $0100
-    dc.w $0182
-    dc.w $0555
-    dc.w $1101
-    dc.w $ff00
-    dc.w $0180
-    dc.w $0200,$0182
-    dc.w $0666,$1201
-    dc.w $ff00
-    dc.w $0180
-    dc.w $0300
-    dc.w $0182
-    dc.w $0777,$1301
-    dc.w $ff00
-    dc.w $0180
-    dc.w $0400,$0182
-    dc.w $0888
-    dc.w $1401
-    dc.w $ff00
-    dc.w $0180
-    dc.w $0500
-    dc.w $0182
-    dc.w $0999
-    dc.w $1501
-    dc.w $ff00
-    dc.w $0180
-    dc.w $0600,$0182
-    dc.w $0aaa,$1601,$ff00,$0180
-    dc.w $0700
-    dc.w $0182
-    dc.w $0bbb
-    dc.w $1701
-    dc.w $ff00
-    dc.w $0180
-    dc.w $0800,$0182
-    dc.w $0ccc
-    dc.w $1801
-    dc.w $ff00
-    dc.w $0180
-    dc.w $0900
-    dc.w $0182
-    dc.w $0ddd
-    dc.w $1901
-    dc.w $ff00
-    dc.w $0180
-    dc.w $0a00,$0182
-    dc.w $0eee,$1a01,$ff00
-    dc.w $1a01
-    dc.w $ff00
-    dc.w $0180
-    dc.w $0b00
-    dc.w $0182
-    dc.w $0fff
-    dc.w $1b01
-    dc.w $ff00
-    dc.w $0180
-    dc.w $0a00,$0182
-    dc.w $0eee,$1c01,$ff00
-    dc.w $1c01
-    dc.w $ff00
-    dc.w $0180
-    dc.w $0900
-    dc.w $0182
-    dc.w $0ddd
-    dc.w $1d01
-    dc.w $ff00
-    dc.w $0180
-    dc.w $0800
-    dc.w $0182
-    dc.w $0ccc
-    dc.w $1e01
-    dc.w $ff00
-    dc.w $0180
-    dc.w $0700
-    dc.w $0182
-    dc.w $0bbb
-    dc.w $1f01
-    dc.w $ff00
-    dc.w $0180
-    dc.w $0600
+    dc.w $0180,$0100
+    dc.w $0182,$0555
+    dc.w $1101,$ff00
+    dc.w $0180,$0200
+    dc.w $0182,$0666
+    dc.w $1201,$ff00
+    dc.w $0180,$0300
+    dc.w $0182,$0777
+    dc.w $1301,$ff00
+    dc.w $0180,$0400
+    dc.w $0182,$0888
+    dc.w $1401,$ff00
+    dc.w $0180,$0500
+    dc.w $0182,$0999
+    dc.w $1501,$ff00
+    dc.w $0180,$0600
+    dc.w $0182,$0aaa
+    dc.w $1601,$ff00
+    dc.w $0180,$0700
+    dc.w $0182,$0bbb
+    dc.w $1701,$ff00
+    dc.w $0180,$0800
+    dc.w $0182,$0ccc
+    dc.w $1801,$ff00
+    dc.w $0180,$0900
+    dc.w $0182,$0ddd
+    dc.w $1901,$ff00
+    dc.w $0180,$0a00
+    dc.w $0182,$0eee
+    dc.w $1a01,$ff00
+    dc.w $0180,$0b00
+    dc.w $0182,$0fff
+    dc.w $1b01,$ff00
+    dc.w $0180,$0a00
+    dc.w $0182,$0eee
+    dc.w $1c01,$ff00
+    dc.w $0180,$0900
+    dc.w $0182,$0ddd
+    dc.w $1d01,$ff00
+    dc.w $0180,$0800
+    dc.w $0182,$0ccc
+    dc.w $1e01,$ff00
+    dc.w $0180,$0700
+    dc.w $0182,$0bbb
+    dc.w $1f01,$ff00
+    dc.w $0180,$0600
     dc.w $0182,$0aaa
     dc.w $2001,$ff00
     dc.w $0180,$0500
-    dc.w $0182
-    dc.w $0999
-    dc.w $2101
-    dc.w $ff00
-    dc.w $0180
-    dc.w $0400,$0182
-    dc.w $0888
-    dc.w $2201
-    dc.w $ff00
-    dc.w $0180
-    dc.w $0300
-    dc.w $0182
-    dc.w $0777,$2301
-    dc.w $ff00
-    dc.w $0180
-    dc.w $0200,$0182
-    dc.w $0666,$2401
-    dc.w $ff00
-    dc.w $0180
-    dc.w $0100
-    dc.w $0182
-    dc.w $0555
-    dc.w $2501
-    dc.w $ff00
-    dc.w $0180
-    dc.w $0000,$0182
-    dc.w $0444,$2601
-    dc.w $ff00
-    dc.w $0180
-    dc.w $0000,$0182
-    dc.w $0333,$2701
-    dc.w $ff00
-    dc.w $0180
-    dc.w $0000,$0182
-    dc.w $0222,$2801
-    dc.w $ff00
-    dc.w $0182
-    dc.w $0111
-    dc.w $0180
-    dc.w $0000,$2901
-    dc.w $ff00
-    dc.w $0180
-    dc.w $0000
-    dc.w $0100
-    dc.w $0000
+    dc.w $0182,$0999
+    dc.w $2101,$ff00
+    dc.w $0180,$0400
+    dc.w $0182,$0888
+    dc.w $2201,$ff00
+    dc.w $0180,$0300
+    dc.w $0182,$0777
+    dc.w $2301,$ff00
+    dc.w $0180,$0200
+    dc.w $0182,$0666
+    dc.w $2401,$ff00
+    dc.w $0180,$0100
+    dc.w $0182,$0555
+    dc.w $2501,$ff00
+    dc.w $0180,$0000
+    dc.w $0182,$0444
+    dc.w $2601,$ff00
+    dc.w $0180,$0000
+    dc.w $0182,$0333
+    dc.w $2701,$ff00
+    dc.w $0180,$0000
+    dc.w $0182,$0222
+    dc.w $2801,$ff00
+    dc.w $0182,$0111
+    dc.w $0180,$0000
+    dc.w $2901,$ff00
+    dc.w $0180,$0000
+    dc.w $0100,$0000
     dc.w $2a01,$ff00
-
     dc.w $0180
 barTwo:
     dc.w $0eee
-
     dc.w $2b01,$ff00
     dc.w $2b01,$ff00
     dc.w $0180,$0000
     dc.w $ffff,$fffe
 ; End of Copper List
-
 
 ; Blitter Scroll ($00068392)
 scroll:
@@ -499,9 +425,9 @@ ekschr:
     dc.b    "0123456789?!^:,.'()-/ ",0
 
 text:
-    dc.b    "      press left mouse button to exit          "
-    dc.b    "      text restarts  ................          "
-    dc.b    "                                               ",0
+    dc.b    "      press left mouse button or escape to exit    "
+    dc.b    "      text restarts  ................              "
+    dc.b    "                                                   ",0
 
 bufleft:
     dc.b 1
