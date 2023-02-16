@@ -8,7 +8,7 @@
 
     section flashtro,code_c
 
-start: 
+start:
     move.l 4.w,a6           ; Get base of exec lib
     lea gfxlib(pc),a1       ; Adress of gfxlib string to a1
     jsr -408(a6)            ; Call OpenLibrary()
@@ -256,11 +256,11 @@ bplFiveLow:
 
     dc.w $0108,$0024
     dc.w $010a,$0024
-    
+
     dc.w $0a01,$fffe
 
     dc.w $0180
-barOne: 
+barOne:
     dc.w $0eee
 
     dc.w $0b01,$fffe
@@ -303,21 +303,21 @@ chrBitPlaneOneLow:
     dc.w $0180
     dc.w $0300
     dc.w $0182
-    dc.w $0777,$1301            
-    dc.w $ff00                  
-    dc.w $0180                  
-    dc.w $0400,$0182            
-    dc.w $0888                  
-    dc.w $1401                  
-    dc.w $ff00                  
-    dc.w $0180                  
-    dc.w $0500                  
-    dc.w $0182                  
-    dc.w $0999                  
-    dc.w $1501                  
-    dc.w $ff00                  
-    dc.w $0180                  
-    dc.w $0600,$0182            
+    dc.w $0777,$1301
+    dc.w $ff00
+    dc.w $0180
+    dc.w $0400,$0182
+    dc.w $0888
+    dc.w $1401
+    dc.w $ff00
+    dc.w $0180
+    dc.w $0500
+    dc.w $0182
+    dc.w $0999
+    dc.w $1501
+    dc.w $ff00
+    dc.w $0180
+    dc.w $0600,$0182
     dc.w $0aaa,$1601,$ff00,$0180
     dc.w $0700
     dc.w $0182
@@ -325,29 +325,29 @@ chrBitPlaneOneLow:
     dc.w $1701
     dc.w $ff00
     dc.w $0180
-    dc.w $0800,$0182      
-    dc.w $0ccc            
-    dc.w $1801            
-    dc.w $ff00            
-    dc.w $0180            
-    dc.w $0900            
-    dc.w $0182            
-    dc.w $0ddd            
-    dc.w $1901            
-    dc.w $ff00            
-    dc.w $0180            
-    dc.w $0a00,$0182      
+    dc.w $0800,$0182
+    dc.w $0ccc
+    dc.w $1801
+    dc.w $ff00
+    dc.w $0180
+    dc.w $0900
+    dc.w $0182
+    dc.w $0ddd
+    dc.w $1901
+    dc.w $ff00
+    dc.w $0180
+    dc.w $0a00,$0182
     dc.w $0eee,$1a01,$ff00
-    dc.w $1a01            
-    dc.w $ff00            
-    dc.w $0180            
-    dc.w $0b00            
-    dc.w $0182            
-    dc.w $0fff            
-    dc.w $1b01            
-    dc.w $ff00            
-    dc.w $0180            
-    dc.w $0a00,$0182      
+    dc.w $1a01
+    dc.w $ff00
+    dc.w $0180
+    dc.w $0b00
+    dc.w $0182
+    dc.w $0fff
+    dc.w $1b01
+    dc.w $ff00
+    dc.w $0180
+    dc.w $0a00,$0182
     dc.w $0eee,$1c01,$ff00
     dc.w $1c01
     dc.w $ff00
@@ -433,12 +433,12 @@ barTwo:
 
 
 ; Blitter Scroll ($00068392)
-scroll: 
+scroll:
     movem.l d0-d6/a0-a6,-(a7)
     btst #$00,switch
     beq rollon
     rts
-rollon: 
+rollon:
     lea $dff000,a0
     move.l #$70000,$50(a0)
     move.l #$6fffe,$54(a0)
@@ -447,7 +447,7 @@ rollon:
     move.w #$c9f0,$40(a0)
     clr.w $42(a0)
     move.w #$0cd7,$58(a0)
-bw: 
+bw:
     btst #$0006,$02(a0)
     bne bw
 
@@ -476,8 +476,8 @@ found:
     add.b #123,d0
     move.b d0,d1
 notf:
-    sub.b #97,d1 
-    muls #112,d1 
+    sub.b #97,d1
+    muls #112,d1
     add.l d1,a2
     move.w #29,d0
 scrloop:
@@ -487,7 +487,7 @@ scrloop:
     tst.b (a1)
     bne qq
     lea text,a1
-qq: 
+qq:
     move.l a1,textadr
 scrlend:
     movem.l (a7)+,d0-d6/a0-a6
@@ -495,7 +495,7 @@ scrlend:
 
 textadr:
     dc.l    text
-ekschr: 
+ekschr:
     dc.b    "0123456789?!^:,.'()-/ ",0
 
 text:
@@ -510,7 +510,7 @@ switch:
 
 wachrs:
     incbin "Dev:Intro_Demo-Code/Hawkeye_intro/wachr.raw"
-    
+
 image:
     incbin "Dev:Intro_Demo-Code/Hawkeye_intro/hawk.raw"
 
