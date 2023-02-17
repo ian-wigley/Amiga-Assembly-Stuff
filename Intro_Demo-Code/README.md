@@ -12,6 +12,8 @@ Minor code updates have been made to the fader routine as it kept crashing on th
 <br>
 ![](Hawkeye_intro.png)
 <br>
-The image below shows the first intro for the "Mega Demo" that never made it to fruition.
+The image below shows the an intro for the "Mega Demo" that never made it to fruition...
+<br>
+This intro was released as "My Final Demo" !!
 <br>
 ![](Intro_one.png)
