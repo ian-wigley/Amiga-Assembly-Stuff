@@ -1,9 +1,9 @@
-# Amiga Intro/Demo code 
-Amiga 68000 Assembly Intro/Demo code written in 1988, for the Amiga 500.
+# Amiga Intro/Demo code
+Amiga Intro/Demo code written 68000 Assembly around 1986~1988, on the Amiga 500.
 <br>
 Some of the code was found hiding on old floppy discs, whilst others have been reverse engineered.
 <br>
-Minor updates have been made as the code didn't run on an A1200.
+Minor updates have been made as the code didn't run on my A1200 and didn't correctly free up the system resources on shutdown.
 <br>
 <br>
 The image below shows the Hawkeye intro. This intro was written to show off Markers pixel skills.
