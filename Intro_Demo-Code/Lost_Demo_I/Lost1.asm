@@ -24,7 +24,9 @@ start:
 rast:
     cmp.b #$ff,$00dff006
     bne rast
-    bsr scroll
+    bsr scroller
+	bsr colrol
+	
 ;    bsr fader
 ;    bsr replay_muzak
     
@@ -51,68 +53,68 @@ gfxbase:    dc.l    0
 
 configureBitPlanes:
 
+;;    lea.l screen,a1
+;    lea.l image+$960,a1
+;    lea.l bplOneHigh,a3     ; Get a pointer to the $e0 address
+;    lea.l bplOneLow,a2      ; Get a pointer to the $e2 address
+;    move.l a1,d1            ; Copy pointer address into d1
+;    move.w d1,(a2)          ; Copy the lower word into a2 ($e2 address)
+;    move.w (a2),d2          ; Copy the data from the pointer into d3
+;    swap d1                 ; Flip d1
+;    move.w d1,(a3)          ; Copy the lower word into a2 ($e0 address)
+;    move.w (a3),d3          ; Copy the data from the pointer into d3
+;
 ;    lea.l screen,a1
-    lea.l image+$960,a1
-    lea.l bplOneHigh,a3     ; Get a pointer to the $e0 address
-    lea.l bplOneLow,a2      ; Get a pointer to the $e2 address
-    move.l a1,d1            ; Copy pointer address into d1
-    move.w d1,(a2)          ; Copy the lower word into a2 ($e2 address)
-    move.w (a2),d2          ; Copy the data from the pointer into d3
-    swap d1                 ; Flip d1
-    move.w d1,(a3)          ; Copy the lower word into a2 ($e0 address)
-    move.w (a3),d3          ; Copy the data from the pointer into d3
-
-    lea.l screen,a1
-    lea.l image+$1dd8,a1 ;$1dd8,a1
-    lea.l bplTwoHigh,a3     ; Get a pointer to the $e4 address
-    lea.l bplTwoLow,a2      ; Get a pointer to the $e6 address
-    move.l a1,d1            ; Copy pointer address into d1
-    move.w d1,(a2)          ; Copy the lower word into a2 ($e4 address)
-    move.w (a2),d2          ; Copy the data from the pointer into d3
-    swap d1                 ; Flip d1
-    move.w d1,(a3)          ; Copy the lower word into a2 ($e6 address)
-    move.w (a3),d3          ; Copy the data from the pointer into d3
-
-    lea.l screen,a1
-    lea.l image+$3250,a1 ;19a4,a1 ;$1dd8,a1
-    lea.l bplThreeHigh,a3   ; Get a pointer to the $e8 address
-    lea.l bplThreeLow,a2    ; Get a pointer to the $ea address
-    move.l a1,d1            ; Copy pointer address into d1
-    move.w d1,(a2)          ; Copy the lower word into a2 ($e8 address)
-    move.w (a2),d2          ; Copy the data from the pointer into d3
-    swap d1                 ; Flip d1
-    move.w d1,(a3)          ; Copy the lower word into a2 ($ea address)
-    move.w (a3),d3          ; Copy the data from the pointer into d3
-
-;    lea.l image+$19a4,a1
-;    lea.l bplFourHigh,a3    ; Get a pointer to the $ec address
-;    lea.l bplFourLow,a2     ; Get a pointer to the $ee address
+;    lea.l image+$1dd8,a1 ;$1dd8,a1
+;    lea.l bplTwoHigh,a3     ; Get a pointer to the $e4 address
+;    lea.l bplTwoLow,a2      ; Get a pointer to the $e6 address
 ;    move.l a1,d1            ; Copy pointer address into d1
-;    move.w d1,(a2)          ; Copy the lower word into a2 ($ec address)
+;    move.w d1,(a2)          ; Copy the lower word into a2 ($e4 address)
 ;    move.w (a2),d2          ; Copy the data from the pointer into d3
 ;    swap d1                 ; Flip d1
-;    move.w d1,(a3)          ; Copy the lower word into a2 ($ee address)
+;    move.w d1,(a3)          ; Copy the lower word into a2 ($e6 address)
 ;    move.w (a3),d3          ; Copy the data from the pointer into d3
-
-;    lea.l image+$a000,a1
-;    lea.l bplFiveHigh,a3    ; Get a pointer to the $f0 address
-;    lea.l bplFiveLow,a2     ; Get a pointer to the $f2 address
-;    move.l a1,d1            ; Copy pointer address into d1
-;    move.w d1,(a2)          ; Copy the lower word into a2 ($f0 address)
-;    move.w (a2),d2          ; Copy the data from the pointer into d3
-;    swap d1                 ; Flip d1
-;    move.w d1,(a3)          ; Copy the lower word into a2 ($f2 address)
-;    move.w (a3),d3          ; Copy the data from the pointer into d3
-
+;
 ;    lea.l screen,a1
-;    lea.l chrBitPlaneOneHigh,a3    ; Get a pointer to the $f0 address
-;    lea.l chrBitPlaneOneLow,a2     ; Get a pointer to the $f2 address
+;    lea.l image+$3250,a1 ;19a4,a1 ;$1dd8,a1
+;    lea.l bplThreeHigh,a3   ; Get a pointer to the $e8 address
+;    lea.l bplThreeLow,a2    ; Get a pointer to the $ea address
 ;    move.l a1,d1            ; Copy pointer address into d1
-;    move.w d1,(a2)          ; Copy the lower word into a2 ($f0 address)
+;    move.w d1,(a2)          ; Copy the lower word into a2 ($e8 address)
 ;    move.w (a2),d2          ; Copy the data from the pointer into d3
 ;    swap d1                 ; Flip d1
-;    move.w d1,(a3)          ; Copy the lower word into a2 ($f2 address)
+;    move.w d1,(a3)          ; Copy the lower word into a2 ($ea address)
 ;    move.w (a3),d3          ; Copy the data from the pointer into d3
+;
+;;    lea.l image+$19a4,a1
+;;    lea.l bplFourHigh,a3    ; Get a pointer to the $ec address
+;;    lea.l bplFourLow,a2     ; Get a pointer to the $ee address
+;;    move.l a1,d1            ; Copy pointer address into d1
+;;    move.w d1,(a2)          ; Copy the lower word into a2 ($ec address)
+;;    move.w (a2),d2          ; Copy the data from the pointer into d3
+;;    swap d1                 ; Flip d1
+;;    move.w d1,(a3)          ; Copy the lower word into a2 ($ee address)
+;;    move.w (a3),d3          ; Copy the data from the pointer into d3
+;
+;;    lea.l image+$a000,a1
+;;    lea.l bplFiveHigh,a3    ; Get a pointer to the $f0 address
+;;    lea.l bplFiveLow,a2     ; Get a pointer to the $f2 address
+;;    move.l a1,d1            ; Copy pointer address into d1
+;;    move.w d1,(a2)          ; Copy the lower word into a2 ($f0 address)
+;;    move.w (a2),d2          ; Copy the data from the pointer into d3
+;;    swap d1                 ; Flip d1
+;;    move.w d1,(a3)          ; Copy the lower word into a2 ($f2 address)
+;;    move.w (a3),d3          ; Copy the data from the pointer into d3
+;
+;;    lea.l screen,a1
+;;    lea.l chrBitPlaneOneHigh,a3    ; Get a pointer to the $f0 address
+;;    lea.l chrBitPlaneOneLow,a2     ; Get a pointer to the $f2 address
+;;    move.l a1,d1            ; Copy pointer address into d1
+;;    move.w d1,(a2)          ; Copy the lower word into a2 ($f0 address)
+;;    move.w (a2),d2          ; Copy the data from the pointer into d3
+;;    swap d1                 ; Flip d1
+;;    move.w d1,(a3)          ; Copy the lower word into a2 ($f2 address)
+;;    move.w (a3),d3          ; Copy the data from the pointer into d3
     rts
 
 ; Copper List ($000680CE)
@@ -120,580 +122,421 @@ copper:
     dc.w $0106,$0000,$01fc,$0000 ; AGA compatible
     dc.w $0096,$0020
 	
-    dc.w $1001,$ff00
-    dc.w $0100,$0000
-    dc.w $0180,$000f
-    dc.w $2201,$ff00
-    dc.w $0180,$000f
-    dc.w $2301,$ff00
-    dc.w $0180,$000e
-    dc.w $2401,$ff00
-    dc.w $0180,$000d
-    dc.w $2501,$ff00
-    dc.w $0180,$000c
-    dc.w $2601,$ff00
-    dc.w $0180,$000b
-    dc.w $2701,$ff00
-    dc.w $0180,$000a
-    dc.w $2801,$ff00
-    dc.w $0180,$0009
-    dc.w $2901,$ff00
-    dc.w $0180,$0008
-    dc.w $2a01,$ff00
-    dc.w $0180,$0007
-    dc.w $2b01,$ff00
-    dc.w $0180,$0006
-    dc.w $2c01,$ff00
-    dc.w $0180,$0005
-    dc.w $2d01,$ff00
-    dc.w $0180,$0004
-    dc.w $2e01,$ff00
-    dc.w $0180,$0003
-    dc.w $2f01,$ff00
-    dc.w $0180,$0002
-    dc.w $3001,$fffe
-    dc.w $0180,$0001
-    dc.w $3101,$fffe
-    dc.w $0180,$0000
-    
-;    dc.w $00e0
-;    dc.w $0006
-;    dc.w $00e2
-;    dc.w $0000
-    
-;    dc.w $0182,$0fff
-;	dc.w $0184,$0fff
-;    dc.w $018a,$0fff
-;    dc.w $018c,$0fff
-;    dc.w $018e,$0fff
-;    dc.w $01fe,$0000
-	
-;    dc.w $008e,$20a0
-;    dc.w $0090,$40f0
-;    dc.w $0092,$0030
-;    dc.w $0094,$00e8
-;    dc.w $0108,$0024
-;    dc.w $010a,$0024
-	
-    dc.w $0100,$3000 ; Logo has only 3 bitplanes
-    dc.w $0102,$0000
+	dc.w	$3201,$ff00
+	dc.w	$0180,$0000
+	dc.w	$0182,$0eca ;golden browns from here!
+	dc.w	$0184,$0ba0
+	dc.w	$0186,$0a42 
+	dc.w	$0188,$0a52  
+	dc.w	$018a,$0a61
+	dc.w	$018c,$0a71 
+	dc.w	$018e,$0b91 
+	dc.w	$0190,$0ba0
+	dc.w	$0192,$0644
+	dc.w	$0194,$0754
+	dc.w	$0196,$0855
+	dc.w	$0198,$0966
+	dc.w	$019a,$0a76
+	dc.w	$019c,$0b87
+	dc.w	$019e,$0c87
+	dc.w	$01a0,$0c98
+	dc.w	$01a2,$0da9
+	dc.w	$01a4,$0eb9
+	dc.w	$01a6,$0fca
 
-	
-;    dc.w $008e,$2c81
-;    dc.w $0090,$2cc1
-	
-    dc.w $0092,$0038
-;	dc.w $0092,$0030 ; A500 value
-;    dc.w $0094,$00a0 ;d0
-    dc.w $0094,$00d0
-; 	dc.w $0094,$00e8 ; A500 value
-	
-    dc.w $0108,$0028
-;	dc.w $0108,$0024 ; A500 value
-    dc.w $010a,$0028
-;    dc.w $010a,$0024 ; A500 value 
-    
-	
-;	dc.w $00e0
-;    dc.w $0000;6
-;	
-;    dc.w $00e2
-;    dc.w $0000;bfb0
+	dc.w	$01a8,$000f ;blues from here
+	dc.w	$01aa,$012f
+	dc.w	$01ac,$033f
+	dc.w	$01ae,$044f
+	dc.w	$01b0,$066f
+	dc.w	$01b2,$077f
+	dc.w	$01b4,$088f
+	dc.w	$01b6,$0aaf
+	dc.w	$01b8,$0ccf
+	dc.w	$01ba,$0eef
+	dc.w	$01bc,$0fff ;blues end here
+	dc.w	$01be,$0000
 
-    dc.w $00e0
-bplOneHigh:
-    dc.w $0000
-    dc.w $00e2
-bplOneLow:
-    dc.w $0000
-    dc.w $00e4
-bplTwoHigh:
-    dc.w $0000;4
-    dc.w $00e6
-bplTwoLow:
-    dc.w $0000;68f6
-    dc.w $00e8
-bplThreeHigh:
-    dc.w $0000;4
-    dc.w $00ea
-bplThreeLow:	
-    dc.w $0000;7d6e
+	dc.w	$3601,$ff00
+	dc.w	$0180,$0000
+	dc.w	$0102,$0000
+	dc.w	$3701,$ff00
+	dc.w	$0180,$0000
+	dc.w	$0102,$0000
+	dc.w	$3801,$ff00
+	dc.w	$0180,$0000
+	dc.w	$0102,$0000
+	dc.w	$3901,$ff00
+	dc.w	$0180,$0000
+	dc.w	$0102,$0000
+	dc.w	$3a01,$ff00
+	dc.w	$0180,$0000
+	dc.w	$0102,$0000
+	dc.w	$3b01,$ff00
+	dc.w	$0180,$0000
+	dc.w	$0102,$0000
+	dc.w	$3c01,$ff00
+	dc.w	$0180,$0000
+	dc.w	$0102,$0000
+	dc.w	$3d01,$ff00
+	dc.w	$0180,$0111
+	dc.w	$0102
+	dc.w	$0000	
+	dc.w	$3e01,$ff00
+	dc.w	$0180,$0333
+	dc.w	$0102
+	dc.w	$0000
+	dc.w	$3f01,$ff00
+	dc.w	$0180,$0555
+	dc.w	$0102,$0000
+	dc.w	$4001,$ff00
+	dc.w	$0180,$0777
+	dc.w	$0102
+	dc.w	$0000
+	dc.w	$4101,$ff00
+	dc.w	$0180,$0555
+	dc.w	$0102,$0000
+	dc.w	$4201,$ff00
+	dc.w	$0180,$0333
+	dc.w	$4301,$ff00
+	dc.w	$0180,$0111
+	dc.w	$4401,$ff00
+	dc.w	$0180,$0000
 
-    dc.w $00ec
-bplFourHigh:	
-    dc.w $0000;4
-    dc.w $00ee
-bplFourLow:
-    dc.w $0000;91e6
-    dc.w $00f0
-bplFiveHigh:
-    dc.w $0000
-    dc.w $00f2
-bplFiveLow:
-    dc.w $0000
-;;    dc.w $00ee
-;;    dc.w $91e6
+	dc.w	$4c01,$ff00
+	dc.w	$0180,$0111
+	dc.w	$4d01,$ff00
+	dc.w	$0180,$0333
+	dc.w	$4e01,$ff00
+	dc.w	$0180,$0555
+	dc.w	$4f01,$ff00
+	dc.w	$0180,$0777
 
-    dc.w $008e,$2702 ;$20a0
-    dc.w $0090,$49c0 ;$40f0
-	
-    dc.w $0180,$0000
-    dc.w $0182,$0000;666
-    dc.w $0184,$0fff
-	
-	dc.w $0186,$0777
-    ;dc.w $0186,$0444;fff
-;    dc.w $0188,$0777;fff
-	dc.w $0188,$0444;fff
-    dc.w $018a,$0999;fff
-	
-    dc.w $018c,$999;0666
-	
-    dc.w $018e,$fff;0666
-    dc.w $0190,$fff;0444
-    dc.w $0194,$fff;0777
-    dc.w $0198,$fff;0999
+	dc.w	$5001,$ff00
+	dc.w	$0180,$0555
+	dc.w	$5101,$ff00
+	dc.w	$0180,$0333
+	dc.w	$5201,$ff00
+	dc.w	$0180,$0111
+	dc.w	$0102,$0000
+	dc.w	$5301,$ff00
+	dc.w	$0180,$0000
+	dc.w	$0102,$0000
+	dc.w	$5401,$ff00
+	dc.w	$0180,$0000
+	dc.w	$0102
+tlb:	dc.w	$0000
+	dc.w	$5501,$ff00
+	dc.w	$0180,$0000
+	dc.w	$5601,$ff00
+	dc.w	$0100,$0000	
+	dc.w	$0102,$0000
+			
+	dc.w 	$9601,$ff00 ; raster colour effect !	
+	dc.w	$0180,$0211
+	dc.w	$9701,$ff00
+	dc.w	$0180,$0311
+	dc.w	$9801,$ff00
+	dc.w 	$0180,$0422
+	dc.w 	$9901,$ff00
+	dc.w	$0180,$0533
+	dc.w	$9a01,$ff00
+	dc.w	$0180,$0644
+	dc.w	$9b01,$ff00
+	dc.w	$0180,$0755
+	dc.w	$9c01,$ff00
+	dc.w	$0180,$0866
+	dc.w	$9d01,$ff00
+	dc.w	$0180,$0977	
+	dc.w	$9e01,$ff00
+	dc.w	$0180,$0a88
+	dc.w	$9f01,$ff00
+	dc.w	$0180,$0977	
+	dc.w	$a001,$ff00
+	dc.w	$0180,$0866
+	dc.w	$a101,$ff00
+	dc.w 	$0180,$0755
+	dc.w	$a201,$ff00
+	dc.w	$0180,$0644
+	dc.w	$a301,$ff00
+	dc.w	$0180,$0533
+	dc.w	$a401,$ff00
+	dc.w	$0180,$0422
+	dc.w	$a501,$ff00
+	dc.w	$0180,$0311
+	dc.w	$a601,$ff00
+	dc.w	$0180,$0211
+	dc.w	$a701,$ff00
+	dc.w	$0180,$0000
+	dc.w	$a801,$ff00
+	dc.w	$0180,$0000
+
+	dc.w	$0182,$0fff
+	dc.w	$0184,$0ebb
+	dc.w	$0186,$0c88
+	dc.w	$0188,$0b66
+	dc.w	$018a,$0a33
+	dc.w	$018c,$0811
+	dc.w	$018e,$0700
+	dc.w	$0190,$0922
+	dc.w	$0192,$0a44
+	dc.w	$0194,$0c77
+	dc.w	$0196,$0dbb
+	dc.w	$0198,$0fee
+	dc.w	$019a,$00c0
+	dc.w	$019c,$0fe5
+	dc.w	$019e,$0c80
+	dc.w	$01a0,$0f00
+	dc.w	$01a2,$0f40
+	dc.w	$01a4,$0f80
+	dc.w	$01a6,$0fd0
+	dc.w	$01a8,$0df0
+	dc.w	$01aa,$09f0
+	dc.w	$01ac,$04f0
+	dc.w	$01ae,$00f0
+	dc.w	$01b0,$00f4
+	dc.w	$01b2,$00f7
+	dc.w	$01b4,$00fb
+	dc.w	$01b6,$00ee
+	dc.w	$01b8,$00be
+	dc.w	$01ba,$007e
+	dc.w	$01bc,$004e
+	dc.w	$01be,$000e
+	dc.w	$a901,$ff00
 
 
+	dc.w	$0180,$0444
+	dc.w	$aa01,$ff00	
+	dc.w	$0180,$0555
+	dc.w	$ab01,$ff00
+	dc.w	$0180,$0666
+	dc.w	$ac01,$ff00
+	dc.w	$0180,$0777	
+	dc.w	$ad01,$ff00
+	dc.w	$0180,$0888
+	dc.w	$ae01,$ff00
+	dc.w	$0180,$0999
+	dc.w	$af01,$ff00
+	dc.w	$0180,$0aaa
+	dc.w	$b001,$ff00
+	dc.w	$0180,$0ccc
+	dc.w	$b101,$ff00
+	dc.w	$0180,$0ddd
+	dc.w	$b201,$ff00
+	dc.w	$0180,$0eee
+	dc.w	$b301,$ff00
+	
+	dc.w	$0100,$3000
 
+;	dc.w	$0092,$0036
+;	dc.w	$0094,$0000
 
-;    dc.w $4201,$ff00
-;    
-;;    dc.w $00e2
-;;    dc.w $bfb5
-;    
-;;    dc.w $0182,$0fff
-;    dc.w $5001,$ff00
-;    
-;;    dc.w $00e2
-;;    dc.w $bfba
-;    
-    dc.w $5301,$ff00
-;    dc.w $01fe,$0000
-    dc.w $0184,$00ff
-    dc.w $5401,$ff00
-;    dc.w $01fe,$0000
-    dc.w $0184,$00ee
-;    dc.w $5501,$ff00
-    dc.w $5501,$ff00
-;    dc.w $01fe,$0000
-    dc.w $0184,$00dd
-    dc.w $5601,$ff00
-;    dc.w $01fe,$0000
-    dc.w $0184,$00cc
-    dc.w $5701,$ff00
-;    dc.w $01fe,$0000
-    dc.w $0184,$00bb
-    dc.w $5801,$ff00
-;    dc.w $01fe,$0000
-    dc.w $0184,$00aa
-    dc.w $5901,$ff00
-;    dc.w $01fe,$0000
-    dc.w $0184,$0099
-    dc.w $5a01,$ff00
-;    dc.w $01fe,$0000
-    dc.w $0184,$0088
-    dc.w $5b01,$ff00
-;    dc.w $01fe,$0000
-    dc.w $0184,$0077
-    dc.w $5c01,$ff00
-;    dc.w $01fe,$0000
-    dc.w $0184,$0066
-    dc.w $5d01,$ff00
-;    dc.w $01fe,$0000
-    dc.w $0184,$0055
-    dc.w $5e01,$ff00
-;    dc.w $01fe,$0000
-    dc.w $0184,$0044
-    dc.w $5f01,$ff00
-;    dc.w $01fe,$0000
-    dc.w $0184,$0033
-    dc.w $6001,$ff00
-;    
-;;    dc.w $00e2
-;;    dc.w $c050
-    
-    dc.w $0184,$0022
-    dc.w $6101,$ff00
-;    dc.w $01fe,$0000
-    dc.w $0184,$0011
-    dc.w $6201,$ff00
-;    dc.w $01fe,$0000
-    dc.w $0184,$0000
-    dc.w $6301,$ff00
-;    dc.w $01fe,$0000
-    dc.w $0184,$00ee
-    dc.w $6401,$ff00
-    dc.w $6401,$ff00
-    
-;    dc.w $00e2
-;    dc.w $bf8a
-    
-    dc.w $0184,$0000
-    dc.w $6501,$ff00
-    dc.w $01fe,$0000
-    dc.w $0184,$0000
-    dc.w $6601,$ff00
-    dc.w $01fe,$0000
-    dc.w $0184,$0000
-    dc.w $0182,$0fff
-    dc.w $6e01,$ff00
-    
-;    dc.w $00e2
-;    dc.w $c01c
-    
-    dc.w $0180,$0000
-    dc.w $7601,$ff00
-    dc.w $0100,$0000
-    dc.w $0180,$0100
-    dc.w $7701,$ff00
-    dc.w $0180,$0400
-    dc.w $7801,$ff00
-    dc.w $0180,$0600
-    dc.w $7901,$ff00
-    dc.w $0180,$0800
-    dc.w $7a01,$ff00
-    dc.w $0180,$0a00
-    dc.w $7b01,$ff00
-    dc.w $0180,$0c00
-    dc.w $7c01,$ff00
-    dc.w $0180,$0e00
-    dc.w $7d01,$ff00
-    dc.w $0180,$0f00
-    dc.w $7e01,$ff00
-    dc.w $0180,$0e00
-    dc.w $7f01,$ff00
-    dc.w $0180,$0c00
-    dc.w $8001,$ff00
-    dc.w $0180,$0a00
-    dc.w $8101,$ff00
-    dc.w $0180,$0800
-    dc.w $8201,$ff00
-    dc.w $0180,$0600
-    dc.w $8301,$ff00
-    dc.w $0180,$0400
-    dc.w $8401,$ff00
-    dc.w $0180,$0200
-    dc.w $8501,$ff00
-    dc.w $0180,$0100
-    dc.w $8f01,$ff00
-    dc.w $0180,$0000
-    dc.w $aa01,$ff00
-	
-    dc.w $008e,$0089
-    dc.w $0090,$00c2
-;
-;    dc.w $008e,$2702 ;$20a0
-;    dc.w $0090,$49c0 ;$40f0
-    dc.w $0092,$0030
-    dc.w $0094,$00d8
+	dc.w	$00e0,$0004 
+	dc.w	$00e2,$05d0
+	dc.w	$00e4,$0004 	
+	dc.w	$00e6,$1930
+	dc.w	$00e8,$0004 
+	dc.w	$00ea,$2c90	
+	dc.w	$00ec,$0004
+	dc.w	$00ee,$39a0
 
-    dc.w $ab01,$ff00
-    dc.w $0100,$1000
- 
+	dc.w	$0180,$070d
+	dc.w	$b401,$ff00
+	dc.w	$0180,$060c
+	dc.w	$b501,$ff00
+	dc.w	$0180,$050b
+	dc.w	$b601,$ff00
+	dc.w	$0180,$040a
+	dc.w	$b701,$ff00
+	dc.w	$0180,$020a 
+	dc.w	$b801,$ff00
+	dc.w	$0180,$0007
+	dc.w	$b901,$ff00
+	dc.w	$0180,$0005 
+	dc.w	$ba01,$ff00
+	dc.w	$0180,$0003
+	dc.w	$bb01,$ff00
+	dc.w	$0180,$0002
+	dc.w	$bc01,$ff00
+	dc.w	$0180,$0000	
+	dc.w	$bd01,$ff00
+	dc.w	$0180,$0000
+	dc.w	$be01,$ff00
+	
 
-; ## Scroll bitplanes ##
- 
-    dc.w $00e0
-    dc.w $0007
-    dc.w $00e2
-    dc.w $0000
-    dc.w $00e4
-    dc.w $0007
-    dc.w $00e6
-    dc.w $0370
-    dc.w $00e8
-    dc.w $0007
-    dc.w $00ea
-    dc.w $06e0
-    
-    dc.w $0182,$0fff
-    dc.w $0188,$0a71
-    dc.w $018a,$0d93
-    dc.w $018c,$0fc5
-    dc.w $0108,$0000
-    dc.w $010a,$0000
-    dc.w $ad01,$ff00
-    dc.w $0182,$0111
-    dc.w $ae01,$ff00
-    dc.w $0182,$0333
-    dc.w $af01,$ff00
-    dc.w $0182,$0555
-    dc.w $b001,$ff00
-    dc.w $0182,$0777
-    dc.w $b101,$ff00
-    dc.w $0182,$0999
-    dc.w $b201,$ff00
-    dc.w $0182,$0bbb
-    dc.w $b301,$ff00
-    dc.w $0182,$0ddd
-    dc.w $b401,$ff00
-    dc.w $0182,$0fff
-    dc.w $b601,$ff00
-    dc.w $0182,$0ddd
-    dc.w $b701,$ff00
-    dc.w $0182,$0bbb
-    dc.w $b801,$ff00
-    dc.w $0182,$0999
-    dc.w $b901,$ff00
-    dc.w $0182,$0777
-    dc.w $ba01,$ff00
-    dc.w $0182,$0555
-    dc.w $bb01,$ff00
-    dc.w $0182,$0333
-    dc.w $bc01,$ff00
-    dc.w $0182,$0111
-    dc.w $bf01,$ff00
+	dc.w	$0180,$0000
+	dc.w	$bf01,$ff00
+	dc.w	$0180,$0000
+	dc.w	$c001,$ff00
+	dc.w	$0180,$0444
+	dc.w	$c101,$ff00
+	dc.w	$0180,$0555
+	dc.w	$c201,$ff00
+	dc.w	$0180,$0666
+	dc.w	$c301,$ff00
+	dc.w	$0180,$0777
+	dc.w	$c401,$ff00
+	dc.w	$0180,$0888
+	dc.w	$c501,$ff00
+	dc.w	$0180,$0999
+	dc.w	$c601,$ff00
+	dc.w	$0180,$0aaa
+	dc.w	$c701,$ff00
+	dc.w	$0180,$0bbb
+	dc.w	$c801,$ff00
+	dc.w	$0180,$0ccc
+	dc.w	$c901,$ff00
+	dc.w	$0180,$0ddd
+	dc.w	$ca01,$ff00
+	dc.w	$0180,$0eee	
+	dc.w	$cb01,$ff00
+	dc.w	$0180,$070d
 	
-    dc.w $0100,$0000
-	
-    dc.w $c001,$ff00
-    dc.w $0180,$0006
-	
-;	dc.w $00e0
-;    dc.w $0007
-;	dc.w $00e4
-;    dc.w $0007
-;	dc.w $00e8
-;    dc.w $0007
-	
-	dc.w $c201,$ff00
-	
-;    dc.w $00e2
-;    dc.w $0318
-;    dc.w $00e6
-;    dc.w $0688
-;    dc.w $00ea
-;	dc.w $09f8
+	dc.w	$0100,$0000
 
-	dc.w $0100,$3000
-    dc.w $c301,$ff00
-	
-    dc.w $00e2
-    dc.w $02c0
-    dc.w $00e6
-    dc.w $0630
-	dc.w $00ea
-	dc.w $09a0
-	
-    dc.w $0100,$3000
-    dc.w $c401,$ff00
-	
-;    dc.w $00e2
-;    dc.w $0268
-;	dc.w $00e6
-;	dc.w $05d8
-;    dc.w $00ea
-;	dc.w $0948
+	dc.w	$cc01,$ff00
+	dc.w	$0180,$060c
+	dc.w	$cd01,$ff00
+	dc.w	$0180,$050b
+	dc.w	$d001,$ff00
+	dc.w	$0180,$040a
+	dc.w	$d101,$ff00
+	dc.w	$0180,$020a
+	dc.w	$d201,$ff00
+	dc.w	$0180,$0007
+	dc.w	$d301,$ff00
+	dc.w	$0180,$0005
+	dc.w	$d401,$ff00
+	dc.w	$0180,$0003
+	dc.w	$d501,$ff00
+	dc.w	$0180,$0002
+	dc.w	$d601,$ff00
+	dc.w	$0180,$0000
+	dc.w	$d701,$ff00
+	dc.w	$0180,$0000	
+;** SCROLL BIT-PLANE POINTERS **
+	dc.w	$d801,$ff00
+	dc.w	$0180,$0000
+	dc.w	$0100,$0000
+	dc.w	$da01,$ff00
+	dc.w	$0180,$0211
+	dc.w	$db01,$ff00
+	dc.w	$0180,$0311
+	dc.w	$dc01,$ff00
+	dc.w	$0180,$0422
+	dc.w	$dd01,$ff00
+	dc.w	$0180,$0533
+	dc.w	$de01,$ff00
+	dc.w	$0180,$0644
+	dc.w	$df01,$ff00
+	dc.w	$0180,$0755
+	dc.w	$e001,$ff00
+	dc.w	$0180,$0866
+	dc.w	$e101,$ff00
+	dc.w	$0180,$0977
+	dc.w	$e201,$ff00
+	dc.w	$0180,$0a88
+	dc.w	$e301,$ff00
+	dc.w	$0180,$0977
+	dc.w	$e401,$ff00
+	dc.w	$0180,$0866
+	dc.w	$e501,$ff00
+	dc.w	$0180,$0755
+	dc.w	$e601,$ff00
+	dc.w	$0180,$0644
+	dc.w	$e701,$ff00
+	dc.w	$0180,$0533
+	dc.w	$e801,$ff00
+	dc.w	$0180,$0422
+	dc.w	$e901,$ff00
+	dc.w	$0180,$0311
+	dc.w	$ea01,$ff00
+	dc.w	$0180,$0211
+	dc.w	$eb01,$ff00
+	dc.w	$0180,$0000
 
-	dc.w $0100,$3000
-    dc.w $c501,$ff00
+ian:	
+	dc.w	$f501,$ff00
+	dc.w	$0180,$0131
+	dc.w	$f601,$ff00
+	dc.w	$0180,$0242
+	dc.w	$f701,$ff00
+	dc.w	$0180,$0353
+	dc.w	$f801,$ff00
+	dc.w	$0180,$0464
+	dc.w	$f901,$ff00
+	dc.w	$0180,$0353
+	dc.w	$fa01,$ff00
+	dc.w	$0180,$0242
 	
-;    dc.w $00e2
-;    dc.w $0210
-;	dc.w $00e6
-;    dc.w $0580
-;    dc.w $00ea
-;	dc.w $08f0
-	
-	dc.w $0100,$3000
-    dc.w $c601,$ff00
-	
-;    dc.w $00e2
-;    dc.w $01b8
-;	dc.w $00e6
-;    dc.w $0528
-;	dc.w $00ea
-;    dc.w $0898
-	
-	dc.w $0100,$3000
-    dc.w $c701,$ff00
-	
-;    dc.w $00e2
-;    dc.w $0160
-;    dc.w $00e6
-;    dc.w $04d0
-;    dc.w $00ea
-;	dc.w $0840
-	
-    dc.w $0100,$3000
-    dc.w $c801,$ff00
-	
-;    dc.w $00e2
-;    dc.w $0108
-;	dc.w $00e6
-;    dc.w $0478
-;	dc.w $00ea
-;	dc.w $07e8
-	
-    dc.w $0100,$3000
-    dc.w $c901,$ff00
-	
-;    dc.w $00e2
-;    dc.w $00b0
-;	dc.w $00e6
-;	dc.w $0420
-;	dc.w $00ea
-;    dc.w $0790
-	
-    dc.w $0100,$3000
-	dc.w $ca01,$ff00
-	
-;	dc.w $00e2
-;    dc.w $0058
-;	dc.w $00e6
-;    dc.w $03c8
-;	dc.w $00ea
-;    dc.w $0738
-	
-	dc.w $0100,$3000
-    dc.w $cb01,$ff00
-	
-;    dc.w $00e2
-;    dc.w $0000
-;	dc.w $00e6
-;    dc.w $0370
-;	dc.w $00ea
-;    dc.w $06e0
+ian1:	
+	dc.w	$fb01,$ff00
+	dc.w	$0180,$0131
+	dc.w	$fc01,$fffe
+	dc.w	$0180,$0000
+	dc.w	$0001,$ff00
+	dc.w	$0100,$4000
 
-    dc.w $0100,$3000
-    dc.w $cc01,$ff00
-    dc.w $0100,$0000
-    dc.w $cd01,$ff00
-    dc.w $0180,$0000
-    dc.w $e001,$ff00
-    dc.w $0100,$0000
-    dc.w $e101,$ff00
+	dc.w	$00e0,$0003
+	dc.w	$00e2,$7e50 ;7f18;7e58 
 
-; ### TODO Fix below ###	
-;    dc.w $0100,$1000
-;    dc.w $008e,$0080
-;    dc.w $0090,$00a0
-;    dc.w $0092,$0040
-;    dc.w $0094,$00f0
-;    dc.w $0108,$0000
-;    dc.w $0108,$0000
-;    dc.w $010a,$0000
+	dc.w	$00e4,$0003
+	dc.w	$00e6,$84e0 
+
+	dc.w	$00e8,$0003
+	dc.w	$00ea,$8bc0 
+
+	dc.w	$00ec,$0003
+	dc.w	$00ee,$9250 
+
+	dc.w	$00f0,$0003
+	dc.w	$00f2,$9250
 	
-;    dc.w $00e0
-;    dc.w $0006
-;	dc.w $00e2
-;    dc.w $d258
-	
-    dc.w $e201,$ff00
-    dc.w $0180,$0110
-    dc.w $0182,$0111
-    dc.w $e301,$ff00
-    dc.w $0180,$0220
-    dc.w $0182,$0333
-    dc.w $e401,$ff00
-    dc.w $0180,$0330
-    dc.w $0182,$0555
-    dc.w $e501,$ff00
-    dc.w $0180,$0440
-    dc.w $0182,$0777
-    dc.w $e601,$ff00
-    dc.w $0180,$0550
-    dc.w $0182,$0fff
-    dc.w $e701,$ff00
-    dc.w $0180,$0660
-    dc.w $e801,$ff00
-    dc.w $0180,$0770
-    dc.w $e901,$ff00
-    dc.w $0180,$0880
-    dc.w $ea01,$ff00
-    dc.w $0180,$0990
-    dc.w $eb01,$ff00
-    dc.w $0180,$0aa0
-    dc.w $ec01,$ff00
-    dc.w $0180,$0bb0
-    dc.w $ed01,$ff00
-    dc.w $0180,$0cc0
-    dc.w $ee01,$ff00
-    dc.w $0180,$0dd0
-    dc.w $ef01,$ff00
-    dc.w $0180,$0ee0
-    dc.w $f001,$f001
-    dc.w $ff00,$ff00
-    dc.w $0180,$0ff0
-    dc.w $0102,$0011
-    dc.w $f101,$ff00
-    dc.w $0180,$0ee0
-    dc.w $f201,$f201
-    dc.w $ff00,$ff00
-    dc.w $0180,$0dd0
-    dc.w $f301,$ff00
-    dc.w $0180,$0cc0
-    dc.w $f401,$ff00
-    dc.w $0180,$0bb0
-    dc.w $f501,$ff00
-    dc.w $0180,$0aa0
-    dc.w $f601,$ff00
-    dc.w $0180,$0990
-    dc.w $f701,$ff00
-    dc.w $0180,$0880
-    dc.w $f801,$ff00
-    dc.w $0180,$0770
-    dc.w $f901,$ff00
-    dc.w $0180,$0660
-    dc.w $fa01,$ff00
-    dc.w $0180,$0550
-    dc.w $fb01,$ff00
-    dc.w $0180,$0440
-    dc.w $0182,$0777
-    dc.w $fc01,$ff00
-    dc.w $0180,$0330
-    dc.w $0182,$0555
-    dc.w $fd01,$ff00
-    dc.w $0180,$0220
-    dc.w $0182,$0333
-    dc.w $fe01,$ff00
-    dc.w $0180,$0111
-    dc.w $0182,$0111
-    dc.w $0100,$0000
-    dc.w $ff01,$ff00
-    dc.w $0180,$0000
-    dc.w $ffe1,$ffee
-;    dc.w $01fe,$0000
-    dc.w $0011,$ffee
-    dc.w $2001,$ff00
-    dc.w $0180,$0002
-    dc.w $2201,$ff00
-    dc.w $0180,$0003
-    dc.w $2301,$ff00
-    dc.w $0180,$0004
-    dc.w $2401,$ff00
-    dc.w $0180,$0005
-    dc.w $2501,$ff00
-    dc.w $0180,$0006
-    dc.w $2601,$ff00
-    dc.w $0180,$0007
-    dc.w $2701,$ff00
-    dc.w $0180,$0008
-    dc.w $2801,$ff00
-    dc.w $0180,$0009
-    dc.w $2a01,$ff00
-    dc.w $0180,$000a
-    dc.w $2b01,$ff00
-    dc.w $0180,$000b
-    dc.w $2c01,$ff00
-    dc.w $0180,$000c
-    dc.w $2d01,$ff00
-    dc.w $0180,$000d
-    dc.w $2e01,$ff00
-    dc.w $0180,$000e
-    dc.w $2f01,$ff00
-    dc.w $0180,$000f
-    dc.w $4001,$ff00
-    dc.w $0180,$0000
+	dc.w	$0182,$0eca
+	dc.w	$0184,$0004
+	dc.w	$0186,$0105
+	dc.w	$0188,$0205
+	dc.w	$018a,$0316
+	dc.w	$018c,$0417
+	dc.w	$018e,$0517
+	dc.w	$0190,$0547
+	dc.w	$0192,$0548
+	dc.w	$0194,$0459
+	dc.w	$0196,$076a
+	dc.w	$0198,$089d
+		
+	dc.w	$ff01,$ff00
+	dc.w	$ffe1,$ffee ;tell copper 255+
+	dc.w	$01fe,$0000
+	dc.w	$0011,$ffee
+
+	dc.w	$2001,$ff00
+	dc.w	$0180,$0000
+	dc.w	$2101,$ff00
+	dc.w	$0180,$0111
+	dc.w	$0100,$0000
+	dc.w	$2201,$ff00
+	dc.w	$0180,$0222
+	dc.w	$2301,$ff00
+	dc.w	$0180,$0333
+	dc.w	$2401,$ff00
+	dc.w	$0180,$0444
+	dc.w	$2501,$ff00
+	dc.w	$0180,$0555
+	dc.w	$2601,$ff00
+	dc.w	$0180,$0666
+	dc.w	$2701,$ff00
+	dc.w	$0180,$0777
+	dc.w	$2801,$ff00
+	dc.w	$0180,$0888
+	dc.w	$2901,$ff00
+	dc.w	$0180,$0999
+	dc.w	$2a01,$ff00
+	dc.w	$0180,$0aaa
+	dc.w	$2b01,$ff00
+	dc.w	$0180,$0000
     dc.w $ffff,$fffe
 ; End of Copper List
-
-
-
-
-
-
 
 
 ;;    dc.w $0096,$0020
@@ -890,355 +733,6 @@ barTwo:
 ;    dc.w $ffff,$fffe
 ; End of Copper List
 
-start_muzak:
-    move.l  #data,muzakoffset   ;** get offset
-
-init0:  move.l  muzakoffset,a0  ;** get highest used pattern
-    add.l   #472,a0
-    move.l  #$80,d0
-    clr.l   d1
-init1:  move.l  d1,d2
-    subq.w  #1,d0
-init2:  move.b  (a0)+,d1
-    cmp.b   d2,d1
-    bgt.s   init1
-    dbf d0,init2
-    addq.b  #1,d2
-
-init3:  move.l  muzakoffset,a0      ;** calc samplepointers
-    lea pointers,a1
-    mulu    #1024,d2
-    add.l   #600,d2
-    add.l   a0,d2
-    move.l  #15-1,d0
-init4:  move.l  d2,(a1)+
-    clr.l   d1
-    move.w  42(a0),d1
-    lsl.l   #1,d1
-    add.l   d1,d2
-    add.l   #30,a0
-    dbf d0,init4
-
-init5:  move.w  #$0,$dff0a8     ;** clear used values
-    move.w  #$0,$dff0b8
-    move.w  #$0,$dff0c8
-    move.w  #$0,$dff0d8
-    clr.w   timpos
-    clr.l   trkpos
-    clr.l   patpos
-
-init6:  move.l  muzakoffset,a0      ;** initialize timer irq
-    move.b  470(a0),numpat+1    ;number of patterns
-    move.l  #240,d0
-    sub.b   471(a0),d0
-    mulu    #122,d0
-    move.b  #$0,$bfde00
-    move.b  d0,$bfd400
-    lsr.w   #8,d0
-    move.b  d0,$bfd500
-    move.b  #$81,$bfdd00
-    move.b  #$11,$bfde00
-    move.l  $78,lev6save
-    move.l  #lev6interrupt,$78
-    rts
-
-stop_muzak:
-    move.b  #$1,$bfdd00     ;** restore timer & dma
-    move.l  lev6save,$78
-    move.w  #$0,$dff0a8
-    move.w  #$0,$dff0b8
-    move.w  #$0,$dff0c8
-    move.w  #$0,$dff0d8
-    move.w  #$f,$dff096
-    rts
-
-lev6interrupt:
-    movem.l d0/d1,-(sp)     ;** jump
-    bsr replay_muzak
-    move.b  $bfdd00,d0
-    move.w  #$2000,$dff09c
-    movem.l (sp)+,d0/d1
-    rte
-
-replay_muzak:
-    movem.l d0-d7/a0-a6,-(a7)
-    addq.w  #1,timpos
-speed:  cmp.w   #6,timpos
-    beq replaystep
-
-chaneleffects:              ;** seek effects
-    lea datach0,a6
-    tst.b   3(a6)
-    beq.s   ceff1
-    lea $dff0a0,a5
-    bsr.s   ceff5
-ceff1:  lea datach1,a6
-    tst.b   3(a6)
-    beq.s   ceff2
-    lea $dff0b0,a5
-    bsr.s   ceff5
-    
-ceff2:  lea datach2,a6
-    tst.b   3(a6)
-    beq.s   ceff3
-    lea $dff0c0,a5
-    bsr.s   ceff5
-ceff3:  lea datach3,a6
-    tst.b   3(a6)
-    beq.s   ceff4
-    lea $dff0d0,a5
-    bsr.s   ceff5
-ceff4:  movem.l (a7)+,d0-d7/a0-a6
-    rts
-
-ceff5:  move.b  2(a6),d0        ;room for some more
-    and.b   #$0f,d0         ;implementations below
-    tst.b   d0
-    beq.s   arpreggiato
-    cmp.b   #1,d0
-    beq pitchup
-    cmp.b   #2,d0
-    beq pitchdown
-    cmp.b   #12,d0
-    beq setvol
-    cmp.b   #14,d0
-    beq setfilt
-    cmp.b   #15,d0
-    beq setspeed
-    rts
-
-arpreggiato:                ;** spread by time
-    cmp.w   #1,timpos
-    beq.s   arp1
-    cmp.w   #2,timpos
-    beq.s   arp2
-    cmp.w   #3,timpos
-    beq.s   arp3
-    cmp.w   #4,timpos
-    beq.s   arp1
-    cmp.w   #5,timpos
-    beq.s   arp2
-    rts
-
-arp1:   clr.l   d0          ;** get higher note-values
-    move.b  3(a6),d0        ;   or play original
-    lsr.b   #4,d0
-    bra.s   arp4
-arp2:   clr.l   d0
-    move.b  3(a6),d0
-    and.b   #$0f,d0
-    bra.s   arp4
-arp3:   move.w  16(a6),d2
-    bra.s   arp6
-arp4:   lsl.w   #1,d0
-    clr.l   d1
-    move.w  16(a6),d1
-    lea notetable,a0
-arp5:   move.w  (a0,d0.w),d2
-    cmp.w   (a0),d1
-    beq.s   arp6
-    addq.l  #2,a0
-    bra.s   arp5
-arp6:   move.w  d2,6(a5)
-    rts
-
-pitchdown:
-    bsr newrou
-    clr.l   d0
-    move.b  3(a6),d0
-    and.b   #$0f,d0
-    add.w   d0,(a4)
-    cmp.w   #$358,(a4)
-    bmi.s   ok1
-    move.w  #$358,(a4)
-ok1:    move.w  (a4),6(a5)
-    rts
-
-pitchup:bsr newrou
-    clr.l   d0
-    move.b  3(a6),d0
-    and.b   #$0f,d0
-    sub.w   d0,(a4)
-    cmp.w   #$71,(a4)
-    bpl.s   ok2
-    move.w  #$71,(a4)
-ok2:    move.w  (a4),6(a5)
-    rts
-
-setvol: move.b  3(a6),8(a5)
-    rts
-
-setfilt:move.b  3(a6),d0
-    and.b   #$01,d0
-    asl.b   #$01,d0
-    and.b   #$fd,$bfe001
-    or.b    d0,$bfe001
-    rts
-
-setspeed:
-    clr.l   d0
-    move.b  3(a6),d0
-    and.b   #$0f,d0
-    move.w  d0,speed+2
-    rts
-
-newrou: cmp.l   #datach0,a6
-    bne.s   next1
-    lea voi1,a4
-    rts
-next1:  cmp.l   #datach1,a6
-    bne.s   next2
-    lea voi2,a4
-    rts
-next2:  cmp.l   #datach2,a6
-    bne.s   next3
-    lea voi3,a4
-    rts
-next3:  lea voi4,a4
-    rts
-
-replaystep:             ;** work next pattern-step
-    clr.w   timpos
-    move.l  muzakoffset,a0
-    move.l  a0,a3
-    add.l   #12,a3          ;ptr to soundprefs
-    move.l  a0,a2
-    add.l   #472,a2         ;ptr to pattern-table
-    add.l   #600,a0         ;ptr to first pattern
-    clr.l   d1
-    move.l  trkpos,d0       ;get ptr to current pattern
-    move.b  (a2,d0),d1
-    mulu    #1024,d1
-    add.l   patpos,d1       ;get ptr to current step
-    clr.w   enbits
-    lea $dff0a0,a5      ;chanel 0
-    lea datach0,a6
-    bsr chanelhandler
-
-    lea $dff0b0,a5      ;chanel 1
-    lea datach1,a6
-    bsr chanelhandler
-
-    lea $dff0c0,a5      ;chanel 2
-    lea datach2,a6
-    bsr chanelhandler
-
-    lea $dff0d0,a5          ;chanel 3
-    lea datach3,a6
-    bsr chanelhandler
-
-    move.l  #400,d0         ;** wait a while and set len
-rep1:   dbf d0,rep1         ;   of oneshot to 1 word
-    move.l  #$8000,d0
-    or.w    enbits,d0
-    move.w  d0,$dff096
-    cmp.w   #1,datach0+14
-    bne.s   rep2
-    clr.w   datach0+14
-    move.w  #1,$dff0a4
-    
-rep2:   cmp.w   #1,datach1+14
-    bne.s   rep3
-    clr.w   datach1+14
-    move.w  #1,$dff0b4
-    
-rep3:   cmp.w   #1,datach2+14
-    bne.s   rep4
-    clr.w   datach2+14
-    move.w  #1,$dff0c4
-    
-rep4:   cmp.w   #1,datach3+14
-    bne.s   rep5
-    clr.w   datach3+14
-    move.w  #1,$dff0d4
-
-rep5:   add.l   #16,patpos      ;next step
-    cmp.l   #64*16,patpos       ;pattern finished ?
-    bne rep6
-    clr.l   patpos
-    addq.l  #1,trkpos       ;next pattern in table
-    clr.l   d0
-    move.w  numpat,d0
-    cmp.l   trkpos,d0       ;song finished ?
-    bne rep6
-    clr.l   trkpos
-rep6:   movem.l (a7)+,d0-d7/a0-a6
-    rts
-
-chanelhandler:
-    move.l  (a0,d1.l),(a6)      ;get period & action-word
-    addq.l  #4,d1           ;point to next chanel
-    clr.l   d2
-    move.b  2(a6),d2        ;get nibble for soundnumber
-conti:  lsr.b   #4,d2
-    beq.s   chan2           ;no soundchange !
-    move.l  d2,d4           ;** calc ptr to sample
-    lsl.l   #2,d2
-    mulu    #30,d4
-    lea pointers-4,a1
-    move.l  (a1,d2.l),4(a6)     ;store sample-address
-    move.w  (a3,d4.l),8(a6)     ;store sample-len in words
-    move.w  2(a3,d4.l),18(a6)   ;store sample-volume
-
-    move.l  d0,-(a7)
-    move.b  2(a6),d0
-    and.b   #$0f,d0
-    cmp.b   #$0c,d0
-    bne.s   ok3
-    move.b  3(a6),8(a5)
-    bra.s   ok4
-ok3:    move.w  2(a3,d4.l),8(a5)    ;change chanel-volume
-ok4:    move.l  (a7)+,d0
-
-    clr.l   d3
-    move.w  4(a3,d4),d3         ;** calc repeatstart
-    add.l   4(a6),d3
-    move.l  d3,10(a6)           ;store repeatstart
-    move.w  6(a3,d4),14(a6)     ;store repeatlength
-    cmp.w   #1,14(a6)
-    beq.s   chan2               ;no sustainsound !
-    move.l  10(a6),4(a6)        ;repstart  = sndstart
-    move.w  6(a3,d4),8(a6)      ;replength = sndlength
-chan2:  cmp.w   #0,(a6)
-    beq.s   chan4               ;no new note set !
-    move.w  22(a6),$dff096      ;clear dma
-    cmp.w   #0,14(a6)
-    bne.s   chan3               ;no oneshot-sample
-    move.w  #1,14(a6)           ;allow resume (later)
-chan3:  bsr newrou
-    move.w  (a6),(a4)
-    move.w  (a6),16(a6)     ;save note for effect
-    move.l  4(a6),0(a5)     ;set samplestart
-    move.w  8(a6),4(a5)     ;set samplelength
-    move.w  (a6),6(a5)      ;set period
-    move.w  22(a6),d0
-    or.w    d0,enbits       ;store dma-bit
-    move.w  18(a6),20(a6)       ;volume trigger
-chan4:  rts
-
-datach0:    dc.w    0,0,0,0,0,0,0,0,0,0,0,1
-datach1:    dc.w    0,0,0,0,0,0,0,0,0,0,0,2
-datach2:    dc.w    0,0,0,0,0,0,0,0,0,0,0,4
-datach3:    dc.w    0,0,0,0,0,0,0,0,0,0,0,8
-voi1:       dc.w    0
-voi2:       dc.w    0
-voi3:       dc.w    0
-voi4:       dc.w    0
-pointers:   dc.l    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-notetable:  dc.w    856,808,762,720,678,640,604,570
-            dc.w    538,508,480,453,428,404,381,360
-            dc.w    339,320,302,285,269,254,240,226  
-            dc.w    214,202,190,180,170,160,151,143
-            dc.w    135,127,120,113,000
-muzakoffset:dc.l    0
-lev6save:   dc.l    0
-trkpos:     dc.l    0
-patpos:     dc.l    0
-numpat:     dc.w    0
-enbits:     dc.w    0
-timpos:     dc.w    0
-
-switch:		dc.b	0, 0
 
 ;scroll:	
 ;;    movem.l $7fe00,a0-a6/d0-d7
@@ -1340,156 +834,87 @@ switch:		dc.b	0, 0
 ;    movem.l (a7)+,d0-d6/a0-a6
 ;	rts
 
-; Blitter Scroll ($00068392)
-scroll:
-    movem.l d0-d6/a0-a6,-(a7)
-rollon:
-    lea $dff000,a0
-    move.l #$70000,$50(a0)
-    move.l #$6fffe,$54(a0)
-    clr.l $64(a0)
-    move.l #$ffffffff,$44(a0)
-    move.w #$c9f0,$40(a0)
-    clr.w $42(a0)
-    move.w #$0cd7,$58(a0)
-bw:
-    btst #$0006,$02(a0)
-    bne bw
-
-    sub.b #1,bufleft
-    bne scrlend
-    move.b #8,bufleft
-    clr.l d0
-    clr.l d1
-    lea wachrs,a2
-    lea ekschr,a3
-    lea $70030,a4
-    move.l textadr,a1
-    move.b (a1)+,d1
-    cmpi.b #$23,(a1)
-    bne eksloop
-eksloop:
-    cmp.b (a3)+,d1
-    beq found
-    addq #1,d0
-    tst.b (a3)
-    bne eksloop
-    bra notf
-found:
-    add.b #123,d0
-    move.b d0,d1
-notf:
-    sub.b #97,d1
-    muls #112,d1
-    add.l d1,a2
-    move.w #29,d0
-scrloop:
-    move.l (a2)+,(a4)
-    add.l #84,a4
-    dbf d0,scrloop
-    tst.b (a1)
-    bne qq
-    lea text,a1
-qq:
-    move.l a1,textadr
-scrlend:
-    movem.l (a7)+,d0-d6/a0-a6
-    rts
-
-
-;000316F0 0839 0000 0003 16ee      BTST.B #$0000,$000316ee [01]
-;000316F8 6700 0004                BEQ.W #$0004 == $000316fe (F)
-;000316FC 4e75                     RTS
-;000316FE 48e7 fffe                MOVEM.L D0-D7/A0-A6,-(A7)
-;00031702 41f9 00df f000           LEA.L $00dff000,A0
-;00031708 217c 0007 0000 0050      MOVE.L #$00070000,(A0,$0050) == $00000050 [00fc07f8]
-;00031710 217c 0006 fffe 0054      MOVE.L #$0006fffe,(A0,$0054) == $00000054 [00fc07f8]
-;00031718 42a8 0064                CLR.L (A0,$0064) == $00000064 [00fc0c52]
-;0003171C 217c ffff ffff 0044      MOVE.L #$ffffffff,(A0,$0044) == $00000044 [00fc07f8]
-;00031724 317c c9f0 0040           MOVE.W #$c9f0,(A0,$0040) == $00000040 [00fc]
-;0003172A 4268 0042                CLR.W (A0,$0042) == $00000042 [07f8]
-;0003172E 317c 1026 0058           MOVE.W #$1026,(A0,$0058) == $00000058 [00fc]
-;00031734 0828 0006 0002           BTST.B #$0006,(A0,$0002) == $00000002 [00]
-;0003173A 6600 fff8                BNE.W #$fff8 == $00031734 (T)
-;0003173E 0439 0001 0003 17ff      SUB.B #$01,$000317ff [05]
-;00031746 6600 009a                BNE.W #$009a == $000317e2 (T)
-;0003174A 13fc 0005 0003 17ff      MOVE.B #$05,$000317ff [05]
-;00031752 2279 0003 17e8           MOVEA.L $000317e8 [00031b3b],A1
-;00031758 45f9 0004 1000           LEA.L $00041000,A2
-;0003175E 47f9 0003 17ec           LEA.L $000317ec,A3
-;00031764 49f9 0007 002a           LEA.L $0007002a,A4
-;0003176A 4280                     CLR.L D0
-;0003176C 4281                     CLR.L D1
-;0003176E 1219                     MOVE.B (A1)+ [08],D1
-;00031770 0c11 002f                CMP.B #$2f,(A1) [08]
-;00031774 6600 0006                BNE.W #$0006 == $0003177c (T)
-;00031778 6100 00ba                BSR.W #$00ba == $00031834
-;0003177C 0c11 0023                CMP.B #$23,(A1) [08]
-;00031780 6600 0006                BNE.W #$0006 == $00031788 (T)
-;00031784 6100 00b8                BSR.W #$00b8 == $0003183e
-;00031788 0c11 0024                CMP.B #$24,(A1) [08]
-;0003178C 6600 0006                BNE.W #$0006 == $00031794 (T)
-;00031790 6100 00b6                BSR.W #$00b6 == $00031848
-;00031794 b21b                     CMP.B (A3)+ [00],D1
-;00031796 6700 000e                BEQ.W #$000e == $000317a6 (F)
-;0003179A 5240                     ADD.W #$01,D0
-;0003179C 4a13                     TST.B (A3) [00]
-;0003179E 6600 fff4                BNE.W #$fff4 == $00031794 (T)
-;000317A2 6000 0008                BT .W #$0008 == $000317ac (T)
-;000317A6 0600 007b                ADD.B #$7b,D0
-;000317AA 1200                     MOVE.B D0,D1
-;000317AC 0401 0061                SUB.B #$61,D1
-;000317B0 c3fc 0050                MULS.W #$0050,D1
-;000317B4 d5c1                     ADDA.L D1,A2
-;000317B6 303c 0013                MOVE.W #$0013,D0
-;000317BA 296a 0dc0 0370           MOVE.L (A2,$0dc0) == $00032064 [652e2e2e],(A4,$0370) == $00000370 [00000000]
-;000317C0 296a 1b80 06e0           MOVE.L (A2,$1b80) == $00032e24 [06300000],(A4,$06e0) == $000006e0 [1f2c0000]
-;000317C6 289a                     MOVE.L (A2)+ [00006501],(A4) [00000000]
-;000317C8 49ec 002c                LEA.L (A4,$002c) == $0000002c,A4
-;000317CC 51c8 ffec                DBF .W D0,#$ffec == $000317ba (F)
-;000317D0 4a11                     TST.B (A1) [08]
-;000317D2 6600 0008                BNE.W #$0008 == $000317dc (T)
-;000317D6 43f9 0003 1b1a           LEA.L $00031b1a,A1
-;000317DC 23c9 0003 17e8           MOVE.L A1,$000317e8 [00031b3b]
-;000317E2 4cdf 7fff                MOVEM.L (A7)+,D0-D7/A0-A6
-;000317E6 4e75                     RTS
+;; Blitter Scroll ($00068392)
+;scroll:
+;    movem.l d0-d6/a0-a6,-(a7)
+;rollon:
+;    lea $dff000,a0
+;    move.l #$70000,$50(a0)
+;    move.l #$6fffe,$54(a0)
+;    clr.l $64(a0)
+;    move.l #$ffffffff,$44(a0)
+;    move.w #$c9f0,$40(a0)
+;    clr.w $42(a0)
+;    move.w #$0cd7,$58(a0)
+;bw:
+;    btst #$0006,$02(a0)
+;    bne bw
+;
+;    sub.b #1,bufleft
+;    bne scrlend
+;    move.b #8,bufleft
+;    clr.l d0
+;    clr.l d1
+;    lea wachrs,a2
+;    lea ekschr,a3
+;    lea $70030,a4
+;    move.l textadr,a1
+;    move.b (a1)+,d1
+;    cmpi.b #$23,(a1)
+;    bne eksloop
+;eksloop:
+;    cmp.b (a3)+,d1
+;    beq found
+;    addq #1,d0
+;    tst.b (a3)
+;    bne eksloop
+;    bra notf
+;found:
+;    add.b #123,d0
+;    move.b d0,d1
+;notf:
+;    sub.b #97,d1
+;    muls #112,d1
+;    add.l d1,a2
+;    move.w #29,d0
+;scrloop:
+;    move.l (a2)+,(a4)
+;    add.l #84,a4
+;    dbf d0,scrloop
+;    tst.b (a1)
+;    bne qq
+;    lea text,a1
+;qq:
+;    move.l a1,textadr
+;scrlend:
+;    movem.l (a7)+,d0-d6/a0-a6
+;    rts
 
 
 
-sod:	move.b	#$01,switch
-	rts
-sod1:	move.b	#$01,boing
-	rts
-sod2:	move.b	#$00,boing
-	rts
 
-boing:	dc.b 0, 0
+;sod:	move.b	#$01,switch
+;	rts
+;sod1:	move.b	#$01,boing
+;	rts
+;sod2:	move.b	#$00,boing
+;	rts
+;
+;boing:	dc.b 0, 0
+;
+;textadr:
+;    dc.l    text
+;ekschr:
+;    dc.b    "0123456789?!^:,.'()-/ ",0
+;
+;text:
+;    dc.b    "      press left mouse button or escape to exit    "
+;    dc.b    "      text restarts  ................              "
+;    dc.b    "                                                   ",0,0
+;bufleft:
+;    dc.b 1,0
+;	
 
-textadr:
-    dc.l    text
-ekschr:
-    dc.b    "0123456789?!^:,.'()-/ ",0
-
-text:
-    dc.b    "      press left mouse button or escape to exit    "
-    dc.b    "      text restarts  ................              "
-    dc.b    "                                                   ",0,0
-bufleft:
-    dc.b 1,0
-	
-    blk.l 40960,0
-
-wachrs:
-    ;incbin "Dev:Intro_Demo-Code/Lost_Demo_II/chr.bitmap.raw"
-    incbin "Dev:Intro_Demo-Code/Lost_Demo_II/chr.raw"
-data:
-;    incbin "Dev:Intro_Demo-Code/Lost_Demo_II/mod.twice2"
-
-image:
-    incbin "Dev:Intro_Demo-Code/Lost_Demo_II/logo.raw"
-
-screen:
-     blk.l 20480,0
 
 
 
@@ -1985,17 +1410,18 @@ screen:
 ;	rts
 ;yes:	lea	numbers,a0
 ;	rts
-;
-;
-;colrol:	move.w	ian+8,ian1+8
-;	move.w	ian+16,ian+8
-;	move.w	ian+24,ian+16 
-;	move.w  ian+32,ian+24
-;	move.w	ian+40,ian+32
-;	move.w	ian+48,ian+40	
-;	move.w	ian1+8,ian+48
-;	rts
-;
+
+
+colrol:	
+	move.w	ian+8,ian1+8
+	move.w	ian+16,ian+8
+	move.w	ian+24,ian+16 
+	move.w  ian+32,ian+24
+	move.w	ian+40,ian+32
+	move.w	ian+48,ian+40	
+	move.w	ian1+8,ian+48
+	rts
+
 ;key_press:
 ;	cmpi.b	#$5f,$bfec01
 ;	beq	tune0
@@ -2052,99 +1478,114 @@ screen:
 ;	move.w	#$c000,$dff09a
 ;	move.l	#$1,$bfe001
 ;	rts
-;
-;
-;scroller:
-;	movem.l	$7fe00,d0-d7/a0-a6
-;	bsr	scroll
-;	bsr	scroll
-;	movem.l	d0-d7/a0-a6,$7fe00
-;	rts
-;
-;scroll:
-;	lea	$60000,a0
-;	move.w	#$3,d0
-;hoop:	move.l	a0,$dff050
-;	suba.w	#$2,a0
-;	move.l	a0,$dff054
-;	clr.w	$dff066
-;	clr.w	$dff064
-;	move.l	#$ffffffff,$dff044
-;	clr.w	$dff042
-;	move.w	#$e9f0,$dff040
-;	move.w	#$057d,$dff058
-;	bsr	hoopla
-;	adda.w	#$0a00,a0
-;	dbf	d0,hoop
-;	addi.w	#$0001,buff
-;	cmpi.w	#$0010,buff
-;	beq 	hoop1
-;	rts
-;buff:	dc.w	$0000
-;hoop1:	clr.w	buff
-;	lea	$70000,a1
-;	lea	$60028,a2
-;	lea	nos,a4	;numbers!
-;	clr.l	d1
-;	move.b	(a3)+,d1
-;	cmpi.w	#$20,d1
-;	beq	hoop4
-;	cmpi.w	#$ff,d1
-;	beq	hoop5
-;hoop2:	subi.w	#$40,d1
-;	subi.w	#$01,d1
-;	mulu	#$02,d1
-;	adda.w	d1,a4
-;	adda.w	(a4),a1
-;	move.w	#$0003,d0
-;hoop3:	move.l	a1,$dff050
-;	move.l	a2,$dff054
-;	move.w	#$24,$dff066
-;	move.w	#$24,$dff064
-;	clr.w	$dff042
-;	move.l	#$ffffffff,$dff044
-;	move.w	#$09f0,$dff040
-;	move.w	#$1042,$dff058
-;	bsr	hoopla
-;	adda.w	#$3e80,a1
-;	adda.w	#$0a00,a2
-;	dbf	d0,hoop3
-;	rts
-;hoop4:	move.b	#$58,d1
-;	bra	hoop2
-;hoop5:	move.b	#$58,d1
-;	lea	scrolltext,a3
-;	bra	hoop2
-;hoopla:	btst	#$6,$dff002
-;	bne 	hoopla
-;	rts
-;
-;nos:	dc.b 	$0,$4,$8,$c,$10,$14,$18,$1c
-;	dc.b  	$20,$24,$28,$2c,$30,$34,$38,$3c
-;	dc.b	$40,$44,$48
-;
-;	dc.b	$0a,$50,$0a,$54,$0a,$58
-;	dc.b	$0a,$5c,$0a,$60,$0a,$64
-;	dc.b	$0a,$68,$0a,$6c
-;	dc.b	$0a,$70,$0a,$74,$0a,$78
-;	dc.b	$0a,$7c,$0a,$80,$0a,$84
-;	dc.b	$0a,$88,$0a,$8c,$0a,$90
-;	dc.b	$0a,$90,$0a,$90,$0a,$90
-;	dc.b	$0a,$90,$0a,$90,$0a,$90
-;	dc.b	$0a,$90,$0a,$90,$0a,$90
-;
-;scrolltext:
-;dc.b	' ANZAX '
-;dc.b	$ff
-;
-;
-;numbers:
-;	dc.b	$11,$22,$33,$44,$55,$66,$77,$88
-;	dc.b	$77,$66,$55,$44,$33,$22,$11,$00
-;end:	dc.b	$00
 
 
+scroller:
+	movem.l d0-d6/a0-a6,-(a7)
+	;movem.l	$7fe00,d0-d7/a0-a6
+	bsr	scroll
+	bsr	scroll
+	;movem.l	d0-d7/a0-a6,$7fe00
+	movem.l (a7)+,d0-d6/a0-a6
+	rts
 
+scroll:
+	lea	$60000,a0
+	move.w	#$3,d0
+hoop:	move.l	a0,$dff050
+	suba.w	#$2,a0
+	move.l	a0,$dff054
+	clr.w	$dff066
+	clr.w	$dff064
+	move.l	#$ffffffff,$dff044
+	clr.w	$dff042
+	move.w	#$e9f0,$dff040
+	move.w	#$057d,$dff058
+	bsr	hoopla
+	adda.w	#$0a00,a0
+	dbf	d0,hoop
+	addi.w	#$0001,buff
+	cmpi.w	#$0010,buff
+	beq 	hoop1
+	rts
+buff:	dc.w	$0000
+hoop1:	clr.w	buff
+	lea	$70000,a1
+	lea	$60028,a2
+	lea	nos,a4	;numbers!
+	clr.l	d1
+	move.b	(a3)+,d1
+	cmpi.w	#$20,d1
+	beq	hoop4
+	cmpi.w	#$ff,d1
+	beq	hoop5
+hoop2:	subi.w	#$40,d1
+	subi.w	#$01,d1
+	mulu	#$02,d1
+	adda.w	d1,a4
+	adda.w	(a4),a1
+	move.w	#$0003,d0
+hoop3:	move.l	a1,$dff050
+	move.l	a2,$dff054
+	move.w	#$24,$dff066
+	move.w	#$24,$dff064
+	clr.w	$dff042
+	move.l	#$ffffffff,$dff044
+	move.w	#$09f0,$dff040
+	move.w	#$1042,$dff058
+	bsr	hoopla
+	adda.w	#$3e80,a1
+	adda.w	#$0a00,a2
+	dbf	d0,hoop3
+	rts
+hoop4:	move.b	#$58,d1
+	bra	hoop2
+hoop5:	move.b	#$58,d1
+	lea	scrolltext,a3
+	bra	hoop2
+hoopla:	btst	#$6,$dff002
+	bne 	hoopla
+	rts
+
+nos:
+	dc.b 	$0,$4,$8,$c,$10,$14,$18,$1c
+	dc.b  	$20,$24,$28,$2c,$30,$34,$38,$3c
+	dc.b	$40,$44,$48
+
+	dc.b	$0a,$50,$0a,$54,$0a,$58
+	dc.b	$0a,$5c,$0a,$60,$0a,$64
+	dc.b	$0a,$68,$0a,$6c
+	dc.b	$0a,$70,$0a,$74,$0a,$78
+	dc.b	$0a,$7c,$0a,$80,$0a,$84
+	dc.b	$0a,$88,$0a,$8c,$0a,$90
+	dc.b	$0a,$90,$0a,$90,$0a,$90
+	dc.b	$0a,$90,$0a,$90,$0a,$90
+	dc.b	$0a,$90,$0a,$90,$0a,$90
+
+scrolltext:
+	dc.b	' ANZAX '
+	dc.b	$ff
+
+
+numbers:
+	dc.b	$11,$22,$33,$44,$55,$66,$77,$88
+	dc.b	$77,$66,$55,$44,$33,$22,$11,$00
+end:
+	dc.b	$00
+
+    blk.l 40960,0
+
+wachrs:
+    ;incbin "Dev:Intro_Demo-Code/Lost_Demo_II/chr.bitmap.raw"
+    incbin "Dev:Intro_Demo-Code/Lost_Demo_I/bod_chrs"
+data:
+;    incbin "Dev:Intro_Demo-Code/Lost_Demo_II/mod.twice2"
+
+image:
+    incbin "Dev:Intro_Demo-Code/Lost_Demo_I/tlb_logo"
+
+screen:
+     blk.l 20480,0
 
 
 
