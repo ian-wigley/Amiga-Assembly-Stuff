@@ -1,13 +1,17 @@
-;APS00000000000000000000000000000000000000000000000000000000000000000000000000000000
+;
 ;
 ;    ***********************************;
 ;    *           Lost Demo I           *;
 ;    ***********************************;
-;    *         Written in 1987.        *;
+;    *         Written in 1988.        *;
 ;    ***********************************;
-
-;; WIP ... original code from line 1500 onwards
-
+;
+;** NOTE! **;
+; load tlb_logo with RI into 	    $34000
+; load lost_logo! with RI into 	    $37000
+; load knight-hi_chrs with RI into  $70000
+; load sentinel_zax with RI into    $40000
+; load obliterator_zax with RI into $50000
 
     section text,code_c
 
@@ -535,407 +539,10 @@ ian1:
 	dc.w	$0180,$0aaa
 	dc.w	$2b01,$ff00
 	dc.w	$0180,$0000
-    dc.w $ffff,$fffe
+    dc.w	$ffff,$fffe
 ; End of Copper List
 
 
-;;    dc.w $0096,$0020
-;;    dc.w $0100,$5000
-;;    dc.w $0102,$0000
-;;    dc.w $0092,$0034
-;;    dc.w $0094,$00cc
-;;    dc.w $0108,$0000
-;;    dc.w $010a,$0000
-;    dc.w $00e0
-;bplOneHigh:
-;    dc.w $0000
-;    dc.w $00e2
-;bplOneLow:
-;    dc.w $0000
-;    dc.w $00e4
-;bplTwoHigh:
-;    dc.w $0000
-;    dc.w $00e6
-;bplTwoLow:
-;    dc.w $0000
-;    dc.w $00e8
-;bplThreeHigh:
-;    dc.w $0000
-;    dc.w $00ea
-;bplThreeLow:
-;    dc.w $0000
-;    dc.w $00ec
-;bplFourHigh:
-;    dc.w $0000
-;    dc.w $00ee
-;bplFourLow:
-;    dc.w $0000
-;    dc.w $00f0
-;bplFiveHigh:
-;    dc.w $0000
-;    dc.w $00f2
-;bplFiveLow:
-;    dc.w $0000
-;;    dc.w $008e,$2702
-;;    dc.w $0090,$49c0
-;;    dc.w $0180,$0000
-;;    dc.w $0182,$0222
-;;    dc.w $0184,$0555
-;;    dc.w $0186,$0777
-;;    dc.w $0188,$0999
-;;    dc.w $018a,$0ccc
-;;    dc.w $018c,$0faa
-;;    dc.w $018e,$0e66
-;;    dc.w $0190,$0310
-;;    dc.w $0192,$0420
-;;    dc.w $0194,$0620
-;;    dc.w $0196,$0731
-;;    dc.w $0198,$0941
-;;    dc.w $019a,$0a52
-;;    dc.w $019c,$0b64
-;;    dc.w $019e,$0b86
-;;    dc.w $01a0,$0c98
-;;    dc.w $01a2,$0dba
-;;    dc.w $01a4,$0edc
-;;    dc.w $01a6,$0fff
-;;    dc.w $01a8,$0040
-;;    dc.w $01aa,$0111
-;;    dc.w $01ac,$0bbf
-;;    dc.w $01ae,$09bf
-;;    dc.w $01b0,$0200
-;;    dc.w $01b2,$0b8f
-;;    dc.w $01b4,$068f
-;;    dc.w $01b6,$0300
-;;    dc.w $01b8,$0700
-;;    dc.w $01ba,$0eef
-;;    dc.w $01bc,$0d80
-;;    dc.w $01be,$0fe0
-;;    dc.w $ffe1,$fffe
-;;    dc.w $01fe,$0000
-;;    dc.w $0011,$fffe
-;;    dc.w $0801,$fffe
-;;    dc.w $0100,$0000
-;;    dc.w $0901,$fffe
-;;    dc.w $008e,$2840
-;;    dc.w $0090,$49e0
-;;    dc.w $0092,$0020
-;;    dc.w $0094,$01e0
-;;    dc.w $0108,$0024
-;;    dc.w $010a,$0024
-;;    dc.w $0a01,$fffe
-    dc.w $0180
-barOne:
-    dc.w $0eee
-;    dc.w $0b01,$fffe
-;    dc.w $0180,$0000
-;    dc.w $0c01,$fffe
-;    dc.w $0100,$1000
-;    dc.w $0182,$0111
-    dc.w $00e0
-chrBitPlaneOneHigh:
-    dc.w $0007
-    dc.w $00e2
-chrBitPlaneOneLow:
-    dc.w $0000
-;    dc.w $0d01,$ff00
-;    dc.w $0182,$0222
-;    dc.w $0e01,$fffe
-;    dc.w $0180,$0000
-;    dc.w $0182,$0333
-;    dc.w $0f01,$ff00
-;    dc.w $0180,$0000
-;    dc.w $0182,$0444
-;    dc.w $1001,$fffe
-;    dc.w $0180,$0100
-;    dc.w $0182,$0555
-;    dc.w $1101,$ff00
-;    dc.w $0180,$0200
-;    dc.w $0182,$0666
-;    dc.w $1201,$ff00
-;    dc.w $0180,$0300
-;    dc.w $0182,$0777
-;    dc.w $1301,$ff00
-;    dc.w $0180,$0400
-;    dc.w $0182,$0888
-;    dc.w $1401,$ff00
-;    dc.w $0180,$0500
-;    dc.w $0182,$0999
-;    dc.w $1501,$ff00
-;    dc.w $0180,$0600
-;    dc.w $0182,$0aaa
-;    dc.w $1601,$ff00
-;    dc.w $0180,$0700
-;    dc.w $0182,$0bbb
-;    dc.w $1701,$ff00
-;    dc.w $0180,$0800
-;    dc.w $0182,$0ccc
-;    dc.w $1801,$ff00
-;    dc.w $0180,$0900
-;    dc.w $0182,$0ddd
-;    dc.w $1901,$ff00
-;    dc.w $0180,$0a00
-;    dc.w $0182,$0eee
-;    dc.w $1a01,$ff00
-;    dc.w $0180,$0b00
-;    dc.w $0182,$0fff
-;    dc.w $1b01,$ff00
-;    dc.w $0180,$0a00
-;    dc.w $0182,$0eee
-;    dc.w $1c01,$ff00
-;    dc.w $0180,$0900
-;    dc.w $0182,$0ddd
-;    dc.w $1d01,$ff00
-;    dc.w $0180,$0800
-;    dc.w $0182,$0ccc
-;    dc.w $1e01,$ff00
-;    dc.w $0180,$0700
-;    dc.w $0182,$0bbb
-;    dc.w $1f01,$ff00
-;    dc.w $0180,$0600
-;    dc.w $0182,$0aaa
-;    dc.w $2001,$ff00
-;    dc.w $0180,$0500
-;    dc.w $0182,$0999
-;    dc.w $2101,$ff00
-;    dc.w $0180,$0400
-;    dc.w $0182,$0888
-;    dc.w $2201,$ff00
-;    dc.w $0180,$0300
-;    dc.w $0182,$0777
-;    dc.w $2301,$ff00
-;    dc.w $0180,$0200
-;    dc.w $0182,$0666
-;    dc.w $2401,$ff00
-;    dc.w $0180,$0100
-;    dc.w $0182,$0555
-;    dc.w $2501,$ff00
-;    dc.w $0180,$0000
-;    dc.w $0182,$0444
-;    dc.w $2601,$ff00
-;    dc.w $0180,$0000
-;    dc.w $0182,$0333
-;    dc.w $2701,$ff00
-;    dc.w $0180,$0000
-;    dc.w $0182,$0222
-;    dc.w $2801,$ff00
-;    dc.w $0182,$0111
-;    dc.w $0180,$0000
-;    dc.w $2901,$ff00
-;    dc.w $0180,$0000
-;    dc.w $0100,$0000
-;    dc.w $2a01,$ff00
-    dc.w $0180
-barTwo:
-    dc.w $0eee
-;    dc.w $2b01,$ff00
-;    dc.w $2b01,$ff00
-;    dc.w $0180,$0000
-;    dc.w $ffff,$fffe
-; End of Copper List
-
-
-;scroll:	
-;;    movem.l $7fe00,a0-a6/d0-d7
-;    movem.l d0-d6/a0-a6,-(a7)
-; 	btst	#$0,switch
-;	beq	roll
-;	rts
-;roll:
-;	lea	$dff000,a0
-;	move.w	#$c9f0,$40(a0);c9f0
-;	move.w	#$0000,$42(a0)
-;	move.w	#$ffff,$44(a0)
-;	move.w	#$ffff,$46(a0)
-;	move.l 	#$00070002,$50(a0)
-;	move.l 	#$00070000,$54(a0)
-;	move.w 	#$1026,$58(a0);1026
-;	move.w	#$0000,$64(a0)
-;	move.w	#$0000,$66(a0)
-;bmx:	
-;    btst #$e,$02(a0)
-;	bne	bmx
-;
-;;	move.w	#$c9f0,$40(a0);c9f0
-;;	move.w	#$0000,$42(a0)
-;;	move.w	#$ffff,$44(a0)
-;;	move.w	#$ffff,$46(a0)
-;;	move.l	#$00070370,$50(a0)
-;;	move.l	#$0007036e,$54(a0)
-;;	move.w	#$0658,$58(a0)
-;;	move.w	#$0000,$64(a0)
-;;	move.w	#$0000,$66(a0)
-;;bx:	
-;;    btst #$0006,$02(a0)
-;;	bne	bx
-;;
-;;	move.w	#$c9f0,$40(a0)
-;;	move.w	#$0000,$42(a0)
-;;	move.w	#$ffff,$44(a0)
-;;	move.w	#$ffff,$46(a0)
-;;	move.l	#$000706e0,$50(a0)
-;;	move.l	#$000706de,$54(a0)
-;;	move.w	#$0658,$58(a0)
-;;	move.w	#$0000,$64(a0)
-;;	move.w	#$0000,$66(a0)
-;;
-;;by:	
-;;    btst #$0006,$02(a0)
-;;	bne	by
-;
-;	sub.b 	#1,bufleft
-;	bne 	scrlend
-;	move.b 	#5,bufleft
-;	move.l 	textadr,a1
-;	lea 	wachrs,a2	;Address of Chars
-;	lea 	ekschr,a3
-;	lea 	$7002e,a4	;Address of Screen
-;	clr.l 	d0
-;	clr.l 	d1
-;	move.b	(a1)+,d1
-;	cmp.b	#$2f,(a1)
-;	bne	fksloop
-;	bsr	sod
-;fksloop:
-;    cmp.b #$23,(a1)
-;	bne	gksloop
-;	bsr	sod1
-;gksloop:
-;    cmp.b #$24,(a1)
-;	bne	eksloop
-;	bsr	sod2
-;eksloop:
-;    cmp.b (a3)+,d1
-;	beq found
-;	addq #1,d0
-;	tst.b (a3)
-;	bne eksloop
-;	bra notf
-;found:
-;    add.b #123,d0
-;	move.b d0,d1
-;notf:	
-;    sub.b #97,d1
-;	muls #80,d1
-;	add.l d1,a2
-;	move.w #19,d0
-;scrloop:
-;    move.l 3520(a2),$370(a4)
-;	move.l 7040(a2),$6e0(a4)
-;	move.l (a2)+,(a4)
-;	lea 84(a4),a4
-;	dbf d0,scrloop
-;	tst.b (a1)
-;	bne	qq
-;	lea text,a1
-;qq:	
-;    move.l 	a1,textadr
-;scrlend:
-;;    movem.l $7fe00,a0-a6/d0-d7
-;    movem.l (a7)+,d0-d6/a0-a6
-;	rts
-
-;; Blitter Scroll ($00068392)
-;scroll:
-;    movem.l d0-d6/a0-a6,-(a7)
-;rollon:
-;    lea $dff000,a0
-;    move.l #$70000,$50(a0)
-;    move.l #$6fffe,$54(a0)
-;    clr.l $64(a0)
-;    move.l #$ffffffff,$44(a0)
-;    move.w #$c9f0,$40(a0)
-;    clr.w $42(a0)
-;    move.w #$0cd7,$58(a0)
-;bw:
-;    btst #$0006,$02(a0)
-;    bne bw
-;
-;    sub.b #1,bufleft
-;    bne scrlend
-;    move.b #8,bufleft
-;    clr.l d0
-;    clr.l d1
-;    lea wachrs,a2
-;    lea ekschr,a3
-;    lea $70030,a4
-;    move.l textadr,a1
-;    move.b (a1)+,d1
-;    cmpi.b #$23,(a1)
-;    bne eksloop
-;eksloop:
-;    cmp.b (a3)+,d1
-;    beq found
-;    addq #1,d0
-;    tst.b (a3)
-;    bne eksloop
-;    bra notf
-;found:
-;    add.b #123,d0
-;    move.b d0,d1
-;notf:
-;    sub.b #97,d1
-;    muls #112,d1
-;    add.l d1,a2
-;    move.w #29,d0
-;scrloop:
-;    move.l (a2)+,(a4)
-;    add.l #84,a4
-;    dbf d0,scrloop
-;    tst.b (a1)
-;    bne qq
-;    lea text,a1
-;qq:
-;    move.l a1,textadr
-;scrlend:
-;    movem.l (a7)+,d0-d6/a0-a6
-;    rts
-
-
-
-
-;sod:	move.b	#$01,switch
-;	rts
-;sod1:	move.b	#$01,boing
-;	rts
-;sod2:	move.b	#$00,boing
-;	rts
-;
-;boing:	dc.b 0, 0
-;
-;textadr:
-;    dc.l    text
-;ekschr:
-;    dc.b    "0123456789?!^:,.'()-/ ",0
-;
-;text:
-;    dc.b    "      press left mouse button or escape to exit    "
-;    dc.b    "      text restarts  ................              "
-;    dc.b    "                                                   ",0,0
-;bufleft:
-;    dc.b 1,0
-;	
-
-
-
-
-
-
-
-
-
-
-
-;;*********************************************
-;;*	ANZAX/THE LOST BOYS SRC CODE         *
-;;*	          DEMO #1.		     *
-;;*********************************************
-;
-;;** NOTE! **;
-;; load tlb_logo with RI into 	    $34000
-;; load lost_logo! with RI into 	    $37000
-;; load knight-hi_chrs with RI into  $70000
-;; load sentinel_zax with RI into    $40000
-;; load obliterator_zax with RI into $50000
 ;execbase=4
 ;	move.l	execbase,a6
 ;	jsr	-132(a6)
@@ -1386,8 +993,7 @@ barTwo:
 ;	dc.w	$2b01,$ff00
 ;	dc.w	$0180,$0000
 ;	dc.w	$ffff,$fffe
-;	
-;
+
 ;start:	btst	#$6,$bfe001
 ;	beq	finish
 ;rast:	cmpi.b	#$ff,$dff006
@@ -1519,13 +1125,15 @@ hoop1:	clr.w	buff
 	beq	hoop4
 	cmpi.w	#$ff,d1
 	beq	hoop5
-hoop2:	subi.w	#$40,d1
+hoop2:	
+	subi.w	#$40,d1
 	subi.w	#$01,d1
 	mulu	#$02,d1
 	adda.w	d1,a4
 	adda.w	(a4),a1
 	move.w	#$0003,d0
-hoop3:	move.l	a1,$dff050
+hoop3:	
+	move.l	a1,$dff050
 	move.l	a2,$dff054
 	move.w	#$24,$dff066
 	move.w	#$24,$dff064
@@ -1533,17 +1141,20 @@ hoop3:	move.l	a1,$dff050
 	move.l	#$ffffffff,$dff044
 	move.w	#$09f0,$dff040
 	move.w	#$1042,$dff058
-	bsr	hoopla
+	bsr		hoopla
 	adda.w	#$3e80,a1
 	adda.w	#$0a00,a2
-	dbf	d0,hoop3
+	dbf		d0,hoop3
 	rts
-hoop4:	move.b	#$58,d1
+hoop4:	
+	move.b	#$58,d1
 	bra	hoop2
-hoop5:	move.b	#$58,d1
+hoop5:	
+	move.b	#$58,d1
 	lea	scrolltext,a3
 	bra	hoop2
-hoopla:	btst	#$6,$dff002
+hoopla:	
+	btst	#$6,$dff002
 	bne 	hoopla
 	rts
 
@@ -1576,13 +1187,18 @@ end:
     blk.l 40960,0
 
 wachrs:
-    ;incbin "Dev:Intro_Demo-Code/Lost_Demo_II/chr.bitmap.raw"
     incbin "Dev:Intro_Demo-Code/Lost_Demo_I/bod_chrs"
+
 data:
 ;    incbin "Dev:Intro_Demo-Code/Lost_Demo_II/mod.twice2"
 
+;tlb_logo
 image:
     incbin "Dev:Intro_Demo-Code/Lost_Demo_I/tlb_logo"
+
+lost_logo:
+	incbin "Dev:Intro_Demo-Code/Lost_Demo_I/lost_logo"
+	
 
 screen:
      blk.l 20480,0
