@@ -29,16 +29,16 @@ start:
 ;    bsr start_muzak
 ;    bsr stop_muzak
     bsr.l sentinel
-    
+
 rast:
     cmp.b #$ff,$00dff006
     bne rast
     bsr scroller
     bsr colrol
-    
+
 ;    bsr fader
 ;    bsr replay_muzak
-    
+
     move.b $bfec01,d0       ; Check if the escape Key
     eor.b #$ff,d0           ; has been pressed
     ror.b #1,d0
@@ -63,45 +63,44 @@ gfxbase:    dc.l    0
 configureBitPlanes:
 
     lea.l lostLogo+20,a1
-    lea.l logoBplOneHigh,a3 ; Get a pointer to the $e0 address
-    lea.l logoBplOneLow,a2  ; Get a pointer to the $e2 address
-    move.l a1,d1            ; Copy pointer address into d1
-    move.w d1,(a2)          ; Copy the lower word into a2 ($e2 address)
-    move.w (a2),d2          ; Copy the data from the pointer into d3
-    swap d1                 ; Flip d1
-    move.w d1,(a3)          ; Copy the lower word into a2 ($e0 address)
-    move.w (a3),d3          ; Copy the data from the pointer into d3
+    lea.l logoBplOneHigh,a3   ; Get a pointer to the $e0 address
+    lea.l logoBplOneLow,a2    ; Get a pointer to the $e2 address
+    move.l a1,d1              ; Copy pointer address into d1
+    move.w d1,(a2)            ; Copy the lower word into a2 ($e2 address)
+    move.w (a2),d2            ; Copy the data from the pointer into d3
+    swap d1                   ; Flip d1
+    move.w d1,(a3)            ; Copy the lower word into a2 ($e0 address)
+    move.w (a3),d3            ; Copy the data from the pointer into d3
 
     lea.l lostLogo+60,a1
-    lea.l logoBplTwoHigh,a3 ; Get a pointer to the $e0 address
-    lea.l logoBplTwoLow,a2  ; Get a pointer to the $e2 address
-    move.l a1,d1            ; Copy pointer address into d1
-    move.w d1,(a2)          ; Copy the lower word into a2 ($e2 address)
-    move.w (a2),d2          ; Copy the data from the pointer into d3
-    swap d1                 ; Flip d1
-    move.w d1,(a3)          ; Copy the lower word into a2 ($e0 address)
-    move.w (a3),d3          ; Copy the data from the pointer into d3
+    lea.l logoBplTwoHigh,a3   ; Get a pointer to the $e0 address
+    lea.l logoBplTwoLow,a2    ; Get a pointer to the $e2 address
+    move.l a1,d1              ; Copy pointer address into d1
+    move.w d1,(a2)            ; Copy the lower word into a2 ($e2 address)
+    move.w (a2),d2            ; Copy the data from the pointer into d3
+    swap d1                   ; Flip d1
+    move.w d1,(a3)            ; Copy the lower word into a2 ($e0 address)
+    move.w (a3),d3            ; Copy the data from the pointer into d3
 
     lea.l lostLogo+100,a1
     lea.l logoBplThreeHigh,a3 ; Get a pointer to the $e0 address
     lea.l logoBplThreeLow,a2  ; Get a pointer to the $e2 address
-    move.l a1,d1            ; Copy pointer address into d1
-    move.w d1,(a2)          ; Copy the lower word into a2 ($e2 address)
-    move.w (a2),d2          ; Copy the data from the pointer into d3
-    swap d1                 ; Flip d1
-    move.w d1,(a3)          ; Copy the lower word into a2 ($e0 address)
-    move.w (a3),d3          ; Copy the data from the pointer into d3
+    move.l a1,d1              ; Copy pointer address into d1
+    move.w d1,(a2)            ; Copy the lower word into a2 ($e2 address)
+    move.w (a2),d2            ; Copy the data from the pointer into d3
+    swap d1                   ; Flip d1
+    move.w d1,(a3)            ; Copy the lower word into a2 ($e0 address)
+    move.w (a3),d3            ; Copy the data from the pointer into d3
 
 ;    lea.l lostLogo+120,a1
 ;    lea.l logoBplFourHigh,a3 ; Get a pointer to the $e0 address
 ;    lea.l logoBplFourLow,a2  ; Get a pointer to the $e2 address
-;    move.l a1,d1            ; Copy pointer address into d1
-;    move.w d1,(a2)          ; Copy the lower word into a2 ($e2 address)
-;    move.w (a2),d2          ; Copy the data from the pointer into d3
-;    swap d1                 ; Flip d1
-;    move.w d1,(a3)          ; Copy the lower word into a2 ($e0 address)
-;    move.w (a3),d3          ; Copy the data from the pointer into d3
-
+;    move.l a1,d1             ; Copy pointer address into d1
+;    move.w d1,(a2)           ; Copy the lower word into a2 ($e2 address)
+;    move.w (a2),d2           ; Copy the data from the pointer into d3
+;    swap d1                  ; Flip d1
+;    move.w d1,(a3)           ; Copy the lower word into a2 ($e0 address)
+;    move.w (a3),d3           ; Copy the data from the pointer into d3
 
 
 ;    lea.l screen,a1
@@ -162,16 +161,16 @@ copper:
     dc.w    $0106,$0000
     dc.w    $01fc,$0000 ; AGA compatible
     dc.w    $0096,$0020
-    
+
 ;    dc.w    $3201,$ff00
 ;    dc.w    $0180,$0000
 ;    dc.w    $0182,$0eca ;golden browns from here!
 ;    dc.w    $0184,$0ba0
-;    dc.w    $0186,$0a42 
-;    dc.w    $0188,$0a52  
+;    dc.w    $0186,$0a42
+;    dc.w    $0188,$0a52
 ;    dc.w    $018a,$0a61
-;    dc.w    $018c,$0a71 
-;    dc.w    $018e,$0b91 
+;    dc.w    $018c,$0a71
+;    dc.w    $018e,$0b91
 ;    dc.w    $0190,$0ba0
 ;    dc.w    $0192,$0644
 ;    dc.w    $0194,$0754
@@ -364,12 +363,12 @@ scroll_val:
     dc.w    $00ff
 ;
 ;    dc.w    $0180,$0f44
-;    dc.w    $aa01,$ff00 
+;    dc.w    $aa01,$ff00
 ;    dc.w    $0180,$0555
 ;    dc.w    $ab01,$ff00
 ;    dc.w    $0180,$0666
 ;    dc.w    $ac01,$ff00
-;    dc.w    $0180,$0777 
+;    dc.w    $0180,$0777
 ;    dc.w    $ad01,$ff00
 ;    dc.w    $0180,$0888
 ;    dc.w    $ae01,$ff00
@@ -396,13 +395,13 @@ scroll_val:
 ;;    dc.w    $00e2
 ;;logoBplOneLow:
 ;;  dc.w    $0000
-;   
-;;    dc.w    $00e4,$0004     
+;
+;;    dc.w    $00e4,$0004
 ;;    dc.w    $00e6,$1930
-;;  
-;;    dc.w    $00e8,$0004 
+;;
+;;    dc.w    $00e8,$0004
 ;;    dc.w    $00ea,$2c90
-;;  
+;;
 ;;    dc.w    $00ec,$0004
 ;;    dc.w    $00ee,$39a0
 ;
@@ -414,17 +413,17 @@ scroll_val:
 ;    dc.w    $b601,$ff00
 ;    dc.w    $0180,$040a
 ;    dc.w    $b701,$ff00
-;    dc.w    $0180,$020a 
+;    dc.w    $0180,$020a
 ;    dc.w    $b801,$ff00
 ;    dc.w    $0180,$0007
 ;    dc.w    $b901,$ff00
-;    dc.w    $0180,$0005 
+;    dc.w    $0180,$0005
 ;    dc.w    $ba01,$ff00
 ;    dc.w    $0180,$0003
 ;    dc.w    $bb01,$ff00
 ;    dc.w    $0180,$0002
 ;    dc.w    $bc01,$ff00
-;    dc.w    $0180,$0000 
+;    dc.w    $0180,$0000
 ;    dc.w    $bd01,$ff00
 ;    dc.w    $0180,$0000
 ;    dc.w    $be01,$ff00
@@ -453,10 +452,10 @@ scroll_val:
 ;    dc.w    $c901,$ff00
 ;    dc.w    $0180,$0ddd
 ;    dc.w    $ca01,$ff00
-;    dc.w    $0180,$0eee 
+;    dc.w    $0180,$0eee
 ;    dc.w    $cb01,$ff00
 ;    dc.w    $0180,$070d
-;    
+;
 ;    dc.w    $0100,$0000
 ;
 ;    dc.w    $cc01,$ff00
@@ -520,7 +519,7 @@ scroll_val:
 ;    dc.w    $eb01,$ff00
 ;    dc.w    $0180,$0000
 ;
-;ian:    
+;ian:
 ;    dc.w    $f501,$ff00
 ;    dc.w    $0180,$0131
 ;    dc.w    $f601,$ff00
@@ -533,8 +532,8 @@ scroll_val:
 ;    dc.w    $0180,$0353
 ;    dc.w    $fa01,$ff00
 ;    dc.w    $0180,$0242
-;    
-;ian1:   
+;
+;ian1:
 ;    dc.w    $fb01,$ff00
 ;    dc.w    $0180,$0131
 ;    dc.w    $fc01,$fffe
@@ -545,20 +544,20 @@ scroll_val:
 ;;** Vertical SCROLL BIT-PLANE POINTERS **
 ;
 ;    dc.w    $00e0,$0003
-;    dc.w    $00e2,$7e50 ;7f18;7e58 
+;    dc.w    $00e2,$7e50 ;7f18;7e58
 ;
 ;    dc.w    $00e4,$0003
-;    dc.w    $00e6,$84e0 
+;    dc.w    $00e6,$84e0
 ;
 ;    dc.w    $00e8,$0003
-;    dc.w    $00ea,$8bc0 
+;    dc.w    $00ea,$8bc0
 ;
 ;    dc.w    $00ec,$0003
-;    dc.w    $00ee,$9250 
+;    dc.w    $00ee,$9250
 ;
 ;    dc.w    $00f0,$0003
 ;    dc.w    $00f2,$9250
-;    
+;
 ;    dc.w    $0182,$0eca
 ;    dc.w    $0184,$0004
 ;    dc.w    $0186,$0105
@@ -571,7 +570,7 @@ scroll_val:
 ;    dc.w    $0194,$0459
 ;    dc.w    $0196,$076a
 ;    dc.w    $0198,$089d
-;        
+;
 ;    dc.w    $ff01,$ff00
 ;    dc.w    $ffe1,$ffee ;tell copper 255+
 ;    dc.w    $01fe,$0000
@@ -630,30 +629,30 @@ scroll_val:
 ;;bitplane pointer $e0-$f6
 ;   dc.w    $00e0,$0003
 ;   dc.w    $00e2,$48f3
-;   dc.w    $00e4,$0003  
-;   dc.w    $00e6,$4eba 
+;   dc.w    $00e4,$0003
+;   dc.w    $00e6,$4eba
 ;   dc.w    $00e8,$0003
 ;   dc.w    $00ea,$54aa
-;   dc.w    $00ec,$0003 
+;   dc.w    $00ec,$0003
 ;   dc.w    $00ee,$5a9a
 ;   dc.w    $00f0,$0003
 ;   dc.w    $00f2,$608a
 ;
 ;   dc.w    $008e,$2940 ;display window start
-;   dc.w    $0090,$40c0 ;display window stop    
-;   
-;   dc.w    $0092,$0040 ;40 (40 col) 36 (80 col)    
+;   dc.w    $0090,$40c0 ;display window stop
+;
+;   dc.w    $0092,$0040 ;40 (40 col) 36 (80 col)
 ;   dc.w    $0094,$0fff
-;   
+;
 ;   dc.w    $3201,$ff00
 ;   dc.w    $0180,$0000
 ;   dc.w    $0182,$0eca ;golden browns from here!
 ;   dc.w    $0184,$0ba0
-;   dc.w    $0186,$0a42 
-;   dc.w    $0188,$0a52  
+;   dc.w    $0186,$0a42
+;   dc.w    $0188,$0a52
 ;   dc.w    $018a,$0a61
-;   dc.w    $018c,$0a71 
-;   dc.w    $018e,$0b91 
+;   dc.w    $018c,$0a71
+;   dc.w    $018e,$0b91
 ;   dc.w    $0190,$0ba0
 ;   dc.w    $0192,$0644
 ;   dc.w    $0194,$0754
@@ -704,7 +703,7 @@ scroll_val:
 ;   dc.w    $3d01,$ff00
 ;   dc.w    $0180,$0111
 ;   dc.w    $0102
-;   dc.w    $0000   
+;   dc.w    $0000
 ;   dc.w    $3e01,$ff00
 ;   dc.w    $0180,$0333
 ;   dc.w    $0102
@@ -752,10 +751,10 @@ scroll_val:
 ;   dc.w    $5501,$ff00
 ;   dc.w    $0180,$0000
 ;   dc.w    $5601,$ff00
-;   dc.w    $0100,$0000 
+;   dc.w    $0100,$0000
 ;   dc.w    $0102,$0000
-;           
-;   dc.w    $9601,$ff00 ; raster colour effect !    
+;
+;   dc.w    $9601,$ff00 ; raster colour effect !
 ;   dc.w    $0180,$0211
 ;   dc.w    $9701,$ff00
 ;   dc.w    $0180,$0311
@@ -770,11 +769,11 @@ scroll_val:
 ;   dc.w    $9c01,$ff00
 ;   dc.w    $0180,$0866
 ;   dc.w    $9d01,$ff00
-;   dc.w    $0180,$0977 
+;   dc.w    $0180,$0977
 ;   dc.w    $9e01,$ff00
 ;   dc.w    $0180,$0a88
 ;   dc.w    $9f01,$ff00
-;   dc.w    $0180,$0977 
+;   dc.w    $0180,$0977
 ;   dc.w    $a001,$ff00
 ;   dc.w    $0180,$0866
 ;   dc.w    $a101,$ff00
@@ -829,12 +828,12 @@ scroll_val:
 ;
 ;
 ;   dc.w    $0180,$0444
-;   dc.w    $aa01,$ff00 
+;   dc.w    $aa01,$ff00
 ;   dc.w    $0180,$0555
 ;   dc.w    $ab01,$ff00
 ;   dc.w    $0180,$0666
 ;   dc.w    $ac01,$ff00
-;   dc.w    $0180,$0777 
+;   dc.w    $0180,$0777
 ;   dc.w    $ad01,$ff00
 ;   dc.w    $0180,$0888
 ;   dc.w    $ae01,$ff00
@@ -848,18 +847,18 @@ scroll_val:
 ;   dc.w    $b201,$ff00
 ;   dc.w    $0180,$0eee
 ;   dc.w    $b301,$ff00
-;   
+;
 ;   dc.w    $0100,$3000
 ;
 ;;  dc.w    $0092,$0036
 ;;  dc.w    $0094,$0000
 ;
-;   dc.w    $00e0,$0004 
+;   dc.w    $00e0,$0004
 ;   dc.w    $00e2,$05d0
-;   dc.w    $00e4,$0004     
+;   dc.w    $00e4,$0004
 ;   dc.w    $00e6,$1930
-;   dc.w    $00e8,$0004 
-;   dc.w    $00ea,$2c90 
+;   dc.w    $00e8,$0004
+;   dc.w    $00ea,$2c90
 ;   dc.w    $00ec,$0004
 ;   dc.w    $00ee,$39a0
 ;
@@ -871,21 +870,21 @@ scroll_val:
 ;   dc.w    $b601,$ff00
 ;   dc.w    $0180,$040a
 ;   dc.w    $b701,$ff00
-;   dc.w    $0180,$020a 
+;   dc.w    $0180,$020a
 ;   dc.w    $b801,$ff00
 ;   dc.w    $0180,$0007
 ;   dc.w    $b901,$ff00
-;   dc.w    $0180,$0005 
+;   dc.w    $0180,$0005
 ;   dc.w    $ba01,$ff00
 ;   dc.w    $0180,$0003
 ;   dc.w    $bb01,$ff00
 ;   dc.w    $0180,$0002
 ;   dc.w    $bc01,$ff00
-;   dc.w    $0180,$0000 
+;   dc.w    $0180,$0000
 ;   dc.w    $bd01,$ff00
 ;   dc.w    $0180,$0000
 ;   dc.w    $be01,$ff00
-;   
+;
 ;
 ;   dc.w    $0180,$0000
 ;   dc.w    $bf01,$ff00
@@ -911,10 +910,10 @@ scroll_val:
 ;   dc.w    $c901,$ff00
 ;   dc.w    $0180,$0ddd
 ;   dc.w    $ca01,$ff00
-;   dc.w    $0180,$0eee 
+;   dc.w    $0180,$0eee
 ;   dc.w    $cb01,$ff00
 ;   dc.w    $0180,$070d
-;   
+;
 ;   dc.w    $0100,$0000
 ;
 ;   dc.w    $cc01,$ff00
@@ -936,7 +935,7 @@ scroll_val:
 ;   dc.w    $d601,$ff00
 ;   dc.w    $0180,$0000
 ;   dc.w    $d701,$ff00
-;   dc.w    $0180,$0000 
+;   dc.w    $0180,$0000
 ;;** SCROLL BIT-PLANE POINTERS **
 ;   dc.w    $d801,$ff00
 ;   dc.w    $0180,$0000
@@ -998,20 +997,20 @@ scroll_val:
 ;   dc.w    $0100,$4000
 ;
 ;   dc.w    $00e0,$0003
-;   dc.w    $00e2,$7e50 ;7f18;7e58 
+;   dc.w    $00e2,$7e50 ;7f18;7e58
 ;
 ;   dc.w    $00e4,$0003
-;   dc.w    $00e6,$84e0 
+;   dc.w    $00e6,$84e0
 ;
 ;   dc.w    $00e8,$0003
-;   dc.w    $00ea,$8bc0 
+;   dc.w    $00ea,$8bc0
 ;
 ;   dc.w    $00ec,$0003
-;   dc.w    $00ee,$9250 
+;   dc.w    $00ee,$9250
 ;
 ;   dc.w    $00f0,$0003
 ;   dc.w    $00f2,$9250
-;   
+;
 ;   dc.w    $0182,$0eca
 ;   dc.w    $0184,$0004
 ;   dc.w    $0186,$0105
@@ -1024,7 +1023,7 @@ scroll_val:
 ;   dc.w    $0194,$0459
 ;   dc.w    $0196,$076a
 ;   dc.w    $0198,$089d
-;       
+;
 ;   dc.w    $ff01,$ff00
 ;   dc.w    $ffe1,$ffee ;tell copper 255+
 ;   dc.w    $01fe,$0000
@@ -1081,13 +1080,13 @@ scroll_val:
 ;   rts
 
 
-colrol: 
+colrol:
 ;    move.w  ian+8,ian1+8
 ;    move.w  ian+16,ian+8
-;    move.w  ian+24,ian+16 
+;    move.w  ian+24,ian+16
 ;    move.w  ian+32,ian+24
 ;    move.w  ian+40,ian+32
-;    move.w  ian+48,ian+40   
+;    move.w  ian+48,ian+40
 ;    move.w  ian1+8,ian+48
     rts
 
@@ -1115,7 +1114,7 @@ colrol:
 ;   bsr     jack
 ;   rts
 ;tune2: move.w  #$2,d0
-;   bsr jack    
+;   bsr jack
 ;   rts
 ;tune3: move.w  #$2,d0
 ;   bsr jack1
@@ -1129,12 +1128,12 @@ colrol:
 ;tune6: move.w  #$5,d0
 ;   bsr jack1
 ;   rts
-;   
+;
 ;jack:  jsr $50000
 ;   move.b  #$1,$bfec01
 ;   move.l  #$5010a,tel+2
 ;   rts
-;   
+;
 ;jack1: jsr $40000
 ;   move.b  #$1,$bfec01
 ;   move.l  #$40136,tel+2
@@ -1174,14 +1173,14 @@ scroll:
     rts                         ;000007ec : 4e75                     rts
 l1:
     clr.w    scr_data1          ;000007ee : 4279 0003 0bd8           clr.w    $00030bd8
-    move.w   #$00ff,scroll_val  ;000007f4 : 33fc 00ff 0003 06a8      move.w   #$00ff,$000306a8 
+    move.w   #$00ff,scroll_val  ;000007f4 : 33fc 00ff 0003 06a8      move.w   #$00ff,$000306a8
     lea      $000627f8,a1       ; the scroll is drawn here;000007fc : 43f9 0006 27f8           lea      $000627f8,a1       ; the scroll is drawn here
     lea      $000627fa,a3       ;00000802 : 47f9 0006 27fa           lea      $000627fa,a3
     lea      $00066678,a4       ;00000808 : 49f9 0006 6678           lea      $00066678,a4
     lea      $0006667a,a5       ;0000080e : 4bf9 0006 667a           lea      $0006667a,a5
 s1:
-    move.w   (a3)+,(a1)+        ;00000814 : 32db                     move.w   (a3)+,(a1)+ 
-    move.w   (a5)+,(a4)+        ;00000816 : 38dd                     move.w   (a5)+,(a4)+ 
+    move.w   (a3)+,(a1)+        ;00000814 : 32db                     move.w   (a3)+,(a1)+
+    move.w   (a5)+,(a4)+        ;00000816 : 38dd                     move.w   (a5)+,(a4)+
     cmpa.l   #$00063222,a3      ;00000818 : b7fc 0006 3222           cmpa.l   #$00063222,a3
     beq      t1                 ;0000081e : 6700 0008                beq      $00000828
     jmp      s1                 ;00000822 : 4ef9 0003 0c48           jmp      $00030c48
@@ -1195,7 +1194,7 @@ l2:
     lea      $00030da0,a6       ;00000844 : 4df9 0003 0da0           lea      $00030da0,a6
     lea      $00037008,a0       ;0000084a : 41f9 0003 7008           lea      $00037008,a0
     clr.l    d0                 ;00000850 : 4280                     clr.l    d0
-    move.b   (a2)+,d0           ;00000852 : 101a                     move.b   (a2)+,d0 
+    move.b   (a2)+,d0           ;00000852 : 101a                     move.b   (a2)+,d0
     cmpi.b   #$20,d0            ;00000854 : 0c00 0020                cmpi.b   #$20,d0
     beq      s3                 ;00000858 : 6700 001c                beq      $00000876
     cmpi.b   #$ff,d0            ;0000085c : 0c00 00ff                cmpi.b   #$ff,d0
@@ -1221,7 +1220,7 @@ l3:
 l4:
     lea      $00062830,a1       ;000008a2 : 43f9 0006 2830           lea      $00062830,a1
 s4:
-    move.b   (a0)+,(a1)+        ;000008a8 : 12d8                     move.b   (a0)+,(a1)+ 
+    move.b   (a0)+,(a1)+        ;000008a8 : 12d8                     move.b   (a0)+,(a1)+
     addi.w   #$0001,scr_data3   ;000008aa : 0679 0001 0003 0be0      addi.w   #$0001,$00030be0
     cmpi.w   #$0004,scr_data3   ;000008b2 : 0c79 0004 0003 0be0      cmpi.w   #$0004,$00030be0
     beq      l5                 ;000008ba : 6700 0008                beq      $000008c4
@@ -1244,7 +1243,7 @@ l6:
     adda.w   #$3e80,a4          ;00000908 : d0fc 3e80                adda.w   #$3e80,a4
     lea      $000666b0,a1       ;0000090c : 43f9 0006 66b0           lea      $000666b0,a1
 s5:
-    move.b   (a0)+,(a1)+        ;00000912 : 12d8                     move.b   (a0)+,(a1)+ 
+    move.b   (a0)+,(a1)+        ;00000912 : 12d8                     move.b   (a0)+,(a1)+
     addi.w   #$0001,scr_data3   ;00000914 : 0679 0001 0003 0be0      addi.w   #$0001,$00030be0
     cmpi.w   #$0004,scr_data3   ;0000091c : 0c79 0004 0003 0be0      cmpi.w   #$0004,$00030be0
     beq      l7                 ;00000924 : 6700 0008                beq      $0000092e
