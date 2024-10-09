@@ -1,5 +1,5 @@
 
-    INCLUDE "Dev:Intro_Demo-Code/First_A500_Demo/Include/BareMetal.i"
+    INCLUDE "Dev:Intro_Demo-Code/Minimal/Include/BareMetal.i"
 
     section text,code_c
 
@@ -244,4 +244,4 @@ logoBplFiveLow:
     dc.w    $ffff,$fffe
 
 lostLogo:
-    incbin "Dev:Intro_Demo-Code/First_A500_Demo/Lostboys_logo(320x256x16cols).raw"
+    incbin "Dev:Intro_Demo-Code/Minimal/Lostboys_logo(320x256x16cols).raw"
