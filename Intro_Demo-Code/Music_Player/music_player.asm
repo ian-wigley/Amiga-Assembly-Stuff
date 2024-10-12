@@ -1,14 +1,22 @@
+;APS00000000000000000000000000000000000000000000000000000000000000000000000000000000
 
     INCLUDE "Dev:Intro_Demo-Code/Minimal/Include/BareMetal.i"
 
     section text,code_c
+
+; load sentinel_zax with RI into    $40000
+; load obliterator_zax with RI into $50000
 
 start:
     move.l 4.w,a6            ; Get base of exec lib
     lea gfxlib(pc),a1        ; Address of gfxlib string to a1
     jsr -408(a6)             ; Call OpenLibrary()
     move.l d0,gfxbase        ; Save base of graphics.library
-    bsr configureBitPlanes
+
+    move.w #$0005,d0
+    bsr.l obliterator
+	
+;    bsr configureBitPlanes
 
     lea     $dff000,a5         ; set the hardware registers base address to a5
     lea.l   copper,a0          ; set the copper list pointer in a0
@@ -16,9 +24,12 @@ start:
     move.w  #$8080,DMACON(a5)  ; enable bit 7 (copper DMA active) and 15 (DMA active), effectively move.w #$8080,$dff096
     move.w  #$8010,INTENA(a5)  ; enable copper interrupt
 
-  rast:
+rast:
+
     cmp.b #$ff,$00dff006
     bne rast
+
+    bsr.l obliterator+$10a
 
     move.b $bfec01,d0          ; Check if the escape Key
     eor.b #$ff,d0              ; has been pressed
@@ -243,5 +254,13 @@ logoBplFiveLow:
 ;    dc.w    COLOR0,$0000
     dc.w    $ffff,$fffe
 
+
 lostLogo:
     incbin "Dev:Intro_Demo-Code/Minimal/Lostboys_logo(320x256x16cols).raw"
+	
+	
+sentinel:
+    incbin "Dev:Intro_Demo-Code/Music_Player/sentinel_zax"	
+
+obliterator:
+    incbin "Dev:Intro_Demo-Code/Music_Player/obliterator_zax"
