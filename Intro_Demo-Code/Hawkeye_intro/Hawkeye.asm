@@ -16,14 +16,14 @@ start:
     move.l #copper,$dff080  ; Set new copperlist
     bsr start_muzak
     bsr stop_muzak
-	
+
 rast:
     cmp.b #$ff,$00dff006
     bne rast
     bsr scroll
     bsr fader
     bsr replay_muzak
-	
+
     move.b $bfec01,d0       ; Check if the escape Key
     eor.b #$ff,d0           ; has been pressed
     ror.b #1,d0
@@ -97,15 +97,6 @@ configureBitPlanes:
     move.w d1,(a3)          ; Copy the lower word into a2 ($f2 address)
     move.w (a3),d3          ; Copy the data from the pointer into d3
 
-;    lea.l screen,a1
-;    lea.l chrBitPlaneOneHigh,a3    ; Get a pointer to the $f0 address
-;    lea.l chrBitPlaneOneLow,a2     ; Get a pointer to the $f2 address
-;    move.l a1,d1            ; Copy pointer address into d1
-;    move.w d1,(a2)          ; Copy the lower word into a2 ($f0 address)
-;    move.w (a2),d2          ; Copy the data from the pointer into d3
-;    swap d1                 ; Flip d1
-;    move.w d1,(a3)          ; Copy the lower word into a2 ($f2 address)
-;    move.w (a3),d3          ; Copy the data from the pointer into d3
     rts
 
 colours:
@@ -113,7 +104,6 @@ colours:
 count:
     dc.l 0,0
 
-; Colour Bar fader ($0006806A)
 fader:
     clr.l d0
     move.l count,d0
@@ -130,7 +120,6 @@ end:
     move.l #0,count
     rts
 
-; Colour data ($00068090)
 colourDataStart:
     dc.w $0fff,$0fff
     dc.w $0eee,$0eee
@@ -164,7 +153,6 @@ colourDataStart:
     dc.w $0eee,$0eee
     dc.w $0fff,$0fff
 
-; Copper List ($000680CE)
 copper:
     dc.w $0106,$0000,$01fc,$0000 ; AGA compatible
     dc.w $0096,$0020
@@ -448,7 +436,7 @@ ceff1:  lea datach1,a6
     beq.s   ceff2
     lea $dff0b0,a5
     bsr.s   ceff5
-    
+
 ceff2:  lea datach2,a6
     tst.b   3(a6)
     beq.s   ceff3
@@ -607,17 +595,17 @@ rep1:   dbf d0,rep1         ;   of oneshot to 1 word
     bne.s   rep2
     clr.w   datach0+14
     move.w  #1,$dff0a4
-    
+
 rep2:   cmp.w   #1,datach1+14
     bne.s   rep3
     clr.w   datach1+14
     move.w  #1,$dff0b4
-    
+
 rep3:   cmp.w   #1,datach2+14
     bne.s   rep4
     clr.w   datach2+14
     move.w  #1,$dff0c4
-    
+
 rep4:   cmp.w   #1,datach3+14
     bne.s   rep5
     clr.w   datach3+14
@@ -698,7 +686,7 @@ voi4:       dc.w    0
 pointers:   dc.l    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 notetable:  dc.w    856,808,762,720,678,640,604,570
         dc.w    538,508,480,453,428,404,381,360
-        dc.w    339,320,302,285,269,254,240,226  
+        dc.w    339,320,302,285,269,254,240,226
         dc.w    214,202,190,180,170,160,151,143
         dc.w    135,127,120,113,000
 muzakoffset:    dc.l    0
@@ -769,7 +757,7 @@ textadr:
     dc.l    text
 ekschr:
     dc.b    "0123456789?!^:,.'()-/ ",0
-
+    dc.b    "                                                   ",0,0
 text:
     dc.b    "      press left mouse button or escape to exit    "
     dc.b    "      text restarts  ................              "
@@ -779,7 +767,7 @@ bufleft:
 
 wachrs:
     incbin "Dev:Intro_Demo-Code/Hawkeye_intro/wachr.raw"
-	
+
 data:
     incbin "Dev:Intro_Demo-Code/Hawkeye_intro/mod.twice2"
 
