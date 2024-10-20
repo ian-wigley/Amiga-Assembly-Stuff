@@ -1,3 +1,4 @@
+;APS00000000000000000000000000000000000000000000000000000000000000000000000000000000
 ;
 ;    ***********************************;
 ;    *          Hawkeye Intro          *;
@@ -5,15 +6,23 @@
 ;    *         Written in 1988.        *;
 ;    ***********************************;
 
+    INCLUDE "Dev:Intro_Demo-Code/Hawkeye_intro/Include/BareMetal.i"
+
     section text,code_c
 
 start:
     move.l 4.w,a6           ; Get base of exec lib
-    lea gfxlib(pc),a1       ; Adress of gfxlib string to a1
+    lea gfxlib(pc),a1       ; Address of gfxlib string to a1
     jsr -408(a6)            ; Call OpenLibrary()
     move.l d0,gfxbase       ; Save base of graphics.library
     bsr configureBitPlanes
-    move.l #copper,$dff080  ; Set new copperlist
+	
+    lea     $dff000,a5         ; set the hardware registers base address to a5
+    lea.l   copper,a0          ; set the copper list pointer in a0
+    move.l  a0,COP1LC(a5)      ; Set the copper list pointer into COP1LC (copper list one hardware address), effectively move.w a0,$dff080
+    move.w  #$8080,DMACON(a5)  ; enable bit 7 (copper DMA active) and 15 (DMA active), effectively move.w #$8080,$dff096
+    move.w  #$8010,INTENA(a5)  ; enable copper interrupt
+
     bsr start_muzak
     bsr stop_muzak
 
@@ -34,7 +43,7 @@ rast:
 exit:
     bsr stop_muzak
     move.l gfxbase(pc),a1   ; Base of graphics.library to a1
-    move.l 38(a1),$dff080   ; Restore old copperlist
+    move.l 38(a1),COP1LC    ; Restore old copperlist
     jsr -414(a6)            ; Call CloseLibrary()
     moveq #0,d0             ; Over..
     rts                     ; and out!
@@ -154,7 +163,8 @@ colourDataStart:
     dc.w $0fff,$0fff
 
 copper:
-    dc.w $0106,$0000,$01fc,$0000 ; AGA compatible
+    dc.w $0106,$0000
+	dc.w $01fc,$0000 ; AGA compatible
     dc.w $0096,$0020
     dc.w $0100,$5000
     dc.w $0102,$0000
@@ -702,17 +712,16 @@ scroll:
     movem.l d0-d6/a0-a6,-(a7)
 rollon:
     lea $dff000,a0
-    move.l #$70000,$50(a0)
-    move.l #$6fffe,$54(a0)
-    clr.l $64(a0)
-    move.l #$ffffffff,$44(a0)
-    move.w #$c9f0,$40(a0)
-    clr.w $42(a0)
-    move.w #$0cd7,$58(a0)
+    move.l #$70000,BLTAPT(a0)
+    move.l #$6fffe,BLTDPT(a0)
+    clr.l BLTAMOD(a0)
+    move.l #$ffffffff,BLTAFWM(a0)
+    move.w #$c9f0,BLTCON0(a0)
+    clr.w BLTCON1(a0)
+    move.w #$0cd7,BLTSIZE(a0)
 bw:
-    btst #$0006,$02(a0)
+    btst #$0006,DMACONR(a0)
     bne bw
-
     sub.b #1,bufleft
     bne scrlend
     move.b #8,bufleft
@@ -763,7 +772,7 @@ text:
     dc.b    "      text restarts  ................              "
     dc.b    "                                                   ",0,0
 bufleft:
-    dc.b 1,0
+    dc.b 1,0,0
 
 wachrs:
     incbin "Dev:Intro_Demo-Code/Hawkeye_intro/wachr.raw"
