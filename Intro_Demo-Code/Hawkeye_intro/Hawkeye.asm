@@ -163,15 +163,15 @@ colourDataStart:
     dc.w $0fff,$0fff
 
 copper:
-    dc.w $0106,$0000
-	dc.w $01fc,$0000 ; AGA compatible
-    dc.w $0096,$0020
-    dc.w $0100,$5000
-    dc.w $0102,$0000
-    dc.w $0092,$0034
-    dc.w $0094,$00cc
-    dc.w $0108,$0000
-    dc.w $010a,$0000
+    dc.w BPLCON3,$0000
+    dc.w FMODE, $0000 ; AGA compatible
+    dc.w DMACON,$0020
+    dc.w BPLCON0,$5000
+    dc.w BPLCON1,$0000
+    dc.w DDFSTRT,$0034
+    dc.w DDFSTOP,$00cc
+    dc.w BPL1MOD,$0000
+    dc.w BPL2MOD,$0000
     dc.w $00e0
 bplOneHigh:
     dc.w $0000
@@ -202,10 +202,10 @@ bplFiveHigh:
     dc.w $00f2
 bplFiveLow:
     dc.w $0000
-    dc.w $008e,$2702
-    dc.w $0090,$49c0
-    dc.w $0180,$0000
-    dc.w $0182,$0222
+    dc.w DIWSTRT,$2702
+    dc.w DIWSTOP,$49c0
+    dc.w COLOR0,$0000
+    dc.w COLOR1,$0222
     dc.w $0184,$0555
     dc.w $0186,$0777
     dc.w $0188,$0999
@@ -236,27 +236,29 @@ bplFiveLow:
     dc.w $01ba,$0eef
     dc.w $01bc,$0d80
     dc.w $01be,$0fe0
+	
     dc.w $ffe1,$fffe
-    dc.w $01fe,$0000
-    dc.w $0011,$fffe
+;    dc.w $01fe,$0000
+;    dc.w $0011,$fffe
     dc.w $0801,$fffe
-    dc.w $0100,$0000
+
+    dc.w BPLCON0,$0000
     dc.w $0901,$fffe
-    dc.w $008e,$2840
-    dc.w $0090,$49e0
-    dc.w $0092,$0020
-    dc.w $0094,$01e0
-    dc.w $0108,$0024
-    dc.w $010a,$0024
+    dc.w DIWSTRT,$2840
+    dc.w DIWSTOP,$49e0
+    dc.w DDFSTRT,$0020
+    dc.w DDFSTOP,$01e0
+    dc.w BPL1MOD,$0024
+    dc.w BPL2MOD,$0024
     dc.w $0a01,$fffe
-    dc.w $0180
+    dc.w COLOR0
 barOne:
     dc.w $0eee
     dc.w $0b01,$fffe
-    dc.w $0180,$0000
+    dc.w COLOR0,$0000
     dc.w $0c01,$fffe
     dc.w $0100,$1000
-    dc.w $0182,$0111
+    dc.w COLOR1,$0111
     dc.w $00e0
 chrBitPlaneOneHigh:
     dc.w $0007
@@ -264,98 +266,97 @@ chrBitPlaneOneHigh:
 chrBitPlaneOneLow:
     dc.w $0000
     dc.w $0d01,$ff00
-    dc.w $0182,$0222
+    dc.w COLOR1,$0222
     dc.w $0e01,$fffe
-    dc.w $0180,$0000
-    dc.w $0182,$0333
+    dc.w COLOR0,$0000
+    dc.w COLOR1,$0333
     dc.w $0f01,$ff00
-    dc.w $0180,$0000
-    dc.w $0182,$0444
+    dc.w COLOR0,$0000
+    dc.w COLOR1,$0444
     dc.w $1001,$fffe
-    dc.w $0180,$0100
-    dc.w $0182,$0555
+    dc.w COLOR0,$0100
+    dc.w COLOR1,$0555
     dc.w $1101,$ff00
-    dc.w $0180,$0200
-    dc.w $0182,$0666
+    dc.w COLOR0,$0200
+    dc.w COLOR1,$0666
     dc.w $1201,$ff00
-    dc.w $0180,$0300
-    dc.w $0182,$0777
+    dc.w COLOR0,$0300
+    dc.w COLOR1,$0777
     dc.w $1301,$ff00
-    dc.w $0180,$0400
-    dc.w $0182,$0888
+    dc.w COLOR0,$0400
+    dc.w COLOR1,$0888
     dc.w $1401,$ff00
-    dc.w $0180,$0500
-    dc.w $0182,$0999
+    dc.w COLOR0,$0500
+    dc.w COLOR1,$0999
     dc.w $1501,$ff00
-    dc.w $0180,$0600
-    dc.w $0182,$0aaa
+    dc.w COLOR0,$0600
+    dc.w COLOR1,$0aaa
     dc.w $1601,$ff00
-    dc.w $0180,$0700
-    dc.w $0182,$0bbb
+    dc.w COLOR0,$0700
+    dc.w COLOR1,$0bbb
     dc.w $1701,$ff00
-    dc.w $0180,$0800
-    dc.w $0182,$0ccc
+    dc.w COLOR0,$0800
+    dc.w COLOR1,$0ccc
     dc.w $1801,$ff00
-    dc.w $0180,$0900
-    dc.w $0182,$0ddd
+    dc.w COLOR0,$0900
+    dc.w COLOR1,$0ddd
     dc.w $1901,$ff00
-    dc.w $0180,$0a00
-    dc.w $0182,$0eee
+    dc.w COLOR0,$0a00
+    dc.w COLOR1,$0eee
     dc.w $1a01,$ff00
-    dc.w $0180,$0b00
-    dc.w $0182,$0fff
+    dc.w COLOR0,$0b00
+    dc.w COLOR1,$0fff
     dc.w $1b01,$ff00
-    dc.w $0180,$0a00
-    dc.w $0182,$0eee
+    dc.w COLOR0,$0a00
+    dc.w COLOR1,$0eee
     dc.w $1c01,$ff00
-    dc.w $0180,$0900
-    dc.w $0182,$0ddd
+    dc.w COLOR0,$0900
+    dc.w COLOR1,$0ddd
     dc.w $1d01,$ff00
-    dc.w $0180,$0800
-    dc.w $0182,$0ccc
+    dc.w COLOR0,$0800
+    dc.w COLOR1,$0ccc
     dc.w $1e01,$ff00
-    dc.w $0180,$0700
-    dc.w $0182,$0bbb
+    dc.w COLOR0,$0700
+    dc.w COLOR1,$0bbb
     dc.w $1f01,$ff00
-    dc.w $0180,$0600
-    dc.w $0182,$0aaa
+    dc.w COLOR0,$0600
+    dc.w COLOR1,$0aaa
     dc.w $2001,$ff00
-    dc.w $0180,$0500
-    dc.w $0182,$0999
+    dc.w COLOR0,$0500
+    dc.w COLOR1,$0999
     dc.w $2101,$ff00
-    dc.w $0180,$0400
-    dc.w $0182,$0888
+    dc.w COLOR0,$0400
+    dc.w COLOR1,$0888
     dc.w $2201,$ff00
-    dc.w $0180,$0300
-    dc.w $0182,$0777
+    dc.w COLOR0,$0300
+    dc.w COLOR1,$0777
     dc.w $2301,$ff00
-    dc.w $0180,$0200
-    dc.w $0182,$0666
+    dc.w COLOR0,$0200
+    dc.w COLOR1,$0666
     dc.w $2401,$ff00
-    dc.w $0180,$0100
-    dc.w $0182,$0555
+    dc.w COLOR0,$0100
+    dc.w COLOR1,$0555
     dc.w $2501,$ff00
-    dc.w $0180,$0000
-    dc.w $0182,$0444
+    dc.w COLOR0,$0000
+    dc.w COLOR1,$0444
     dc.w $2601,$ff00
-    dc.w $0180,$0000
-    dc.w $0182,$0333
+    dc.w COLOR0,$0000
+    dc.w COLOR1,$0333
     dc.w $2701,$ff00
-    dc.w $0180,$0000
-    dc.w $0182,$0222
+    dc.w COLOR0,$0000
+    dc.w COLOR1,$0222
     dc.w $2801,$ff00
-    dc.w $0182,$0111
-    dc.w $0180,$0000
+    dc.w COLOR1,$0111
+    dc.w COLOR0,$0000
     dc.w $2901,$ff00
-    dc.w $0180,$0000
-    dc.w $0100,$0000
+    dc.w COLOR0,$0000
+    dc.w BPLCON0,$0000
     dc.w $2a01,$ff00
-    dc.w $0180
+    dc.w COLOR0
 barTwo:
     dc.w $0eee
     dc.w $2b01,$ff00
-    dc.w $2b01,$ff00
-    dc.w $0180,$0000
+    dc.w COLOR0,$0000
     dc.w $ffff,$fffe
 ; End of Copper List
 
