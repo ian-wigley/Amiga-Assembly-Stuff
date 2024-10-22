@@ -1,4 +1,3 @@
-;APS00000000000000000000000000000000000000000000000000000000000000000000000000000000
 ;
 ;    ***********************************;
 ;    *          Hawkeye Intro          *;
@@ -27,7 +26,7 @@ start:
     bsr stop_muzak
 
 rast:
-    cmp.b #$ff,$00dff006
+    cmp.b #$ff,VHPOSR(a5)
     bne rast
     bsr scroll
     bsr fader
@@ -38,7 +37,7 @@ rast:
     ror.b #1,d0
     cmp.b #$45,d0           ; No, continue
     beq.s exit
-    btst #6,$bfe001         ; Left mouse clicked ?
+    btst #6,CIAA            ; Left mouse clicked ?
     bne.b rast              ; No, continue loop!
 exit:
     bsr stop_muzak
@@ -204,38 +203,38 @@ bplFiveLow:
     dc.w $0000
     dc.w DIWSTRT,$2702
     dc.w DIWSTOP,$49c0
-    dc.w COLOR0,$0000
-    dc.w COLOR1,$0222
-    dc.w $0184,$0555
-    dc.w $0186,$0777
-    dc.w $0188,$0999
-    dc.w $018a,$0ccc
-    dc.w $018c,$0faa
-    dc.w $018e,$0e66
-    dc.w $0190,$0310
-    dc.w $0192,$0420
-    dc.w $0194,$0620
-    dc.w $0196,$0731
-    dc.w $0198,$0941
-    dc.w $019a,$0a52
-    dc.w $019c,$0b64
-    dc.w $019e,$0b86
-    dc.w $01a0,$0c98
-    dc.w $01a2,$0dba
-    dc.w $01a4,$0edc
-    dc.w $01a6,$0fff
-    dc.w $01a8,$0040
-    dc.w $01aa,$0111
-    dc.w $01ac,$0bbf
-    dc.w $01ae,$09bf
-    dc.w $01b0,$0200
-    dc.w $01b2,$0b8f
-    dc.w $01b4,$068f
-    dc.w $01b6,$0300
-    dc.w $01b8,$0700
-    dc.w $01ba,$0eef
-    dc.w $01bc,$0d80
-    dc.w $01be,$0fe0
+    dc.w COLOR0, $0000
+    dc.w COLOR1, $0222
+    dc.w COLOR2, $0555
+    dc.w COLOR3, $0777
+    dc.w COLOR4, $0999
+    dc.w COLOR5, $0ccc
+    dc.w COLOR6, $0faa
+    dc.w COLOR7, $0e66
+    dc.w COLOR8, $0310
+    dc.w COLOR9, $0420
+    dc.w COLOR10,$0620
+    dc.w COLOR11,$0731
+    dc.w COLOR12,$0941
+    dc.w COLOR13,$0a52
+    dc.w COLOR14,$0b64
+    dc.w COLOR15,$0b86
+    dc.w COLOR16,$0c98
+    dc.w COLOR17,$0dba
+    dc.w COLOR18,$0edc
+    dc.w COLOR19,$0fff
+    dc.w COLOR20,$0040
+    dc.w COLOR21,$0111
+    dc.w COLOR22,$0bbf
+    dc.w COLOR23,$09bf
+    dc.w COLOR24,$0200
+    dc.w COLOR25,$0b8f
+    dc.w COLOR26,$068f
+    dc.w COLOR27,$0300
+    dc.w COLOR28,$0700
+    dc.w COLOR29,$0eef
+    dc.w COLOR30,$0d80
+    dc.w COLOR31,$0fe0
 	
     dc.w $ffe1,$fffe
 ;    dc.w $01fe,$0000
@@ -626,10 +625,10 @@ rep5:   add.l   #16,patpos      ;next step
     cmp.l   #64*16,patpos       ;pattern finished ?
     bne rep6
     clr.l   patpos
-    addq.l  #1,trkpos       ;next pattern in table
+    addq.l  #1,trkpos           ;next pattern in table
     clr.l   d0
     move.w  numpat,d0
-    cmp.l   trkpos,d0       ;song finished ?
+    cmp.l   trkpos,d0           ;song finished ?
     bne rep6
     clr.l   trkpos
 rep6:   movem.l (a7)+,d0-d7/a0-a6
@@ -637,12 +636,12 @@ rep6:   movem.l (a7)+,d0-d7/a0-a6
 
 chanelhandler:
     move.l  (a0,d1.l),(a6)      ;get period & action-word
-    addq.l  #4,d1           ;point to next chanel
-    clr.l   d2
-    move.b  2(a6),d2        ;get nibble for soundnumber
+    addq.l  #4,d1               ;point to next chanel
+    clr.l      d2
+    move.b  2(a6),d2            ;get nibble for soundnumber
 conti:  lsr.b   #4,d2
-    beq.s   chan2           ;no soundchange !
-    move.l  d2,d4           ;** calc ptr to sample
+    beq.s   chan2               ;no soundchange !
+    move.l  d2,d4               ;** calc ptr to sample
     lsl.l   #2,d2
     mulu    #30,d4
     lea pointers-4,a1
@@ -664,11 +663,11 @@ ok4:    move.l  (a7)+,d0
     move.w  4(a3,d4),d3     ;** calc repeatstart
     add.l   4(a6),d3
     move.l  d3,10(a6)       ;store repeatstart
-    move.w  6(a3,d4),14(a6)     ;store repeatlength
+    move.w  6(a3,d4),14(a6) ;store repeatlength
     cmp.w   #1,14(a6)
     beq.s   chan2           ;no sustainsound !
-    move.l  10(a6),4(a6)        ;repstart  = sndstart
-    move.w  6(a3,d4),8(a6)      ;replength = sndlength
+    move.l  10(a6),4(a6)    ;repstart  = sndstart
+    move.w  6(a3,d4),8(a6)  ;replength = sndlength
 chan2:  cmp.w   #0,(a6)
     beq.s   chan4           ;no new note set !
     move.w  22(a6),$dff096      ;clear dma
@@ -683,7 +682,7 @@ chan3:  bsr newrou
     move.w  (a6),6(a5)      ;set period
     move.w  22(a6),d0
     or.w    d0,enbits       ;store dma-bit
-    move.w  18(a6),20(a6)       ;volume trigger
+    move.w  18(a6),20(a6)   ;volume trigger
 chan4:  rts
 
 datach0:    dc.w    0,0,0,0,0,0,0,0,0,0,0,1
@@ -696,10 +695,10 @@ voi3:       dc.w    0
 voi4:       dc.w    0
 pointers:   dc.l    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 notetable:  dc.w    856,808,762,720,678,640,604,570
-        dc.w    538,508,480,453,428,404,381,360
-        dc.w    339,320,302,285,269,254,240,226
-        dc.w    214,202,190,180,170,160,151,143
-        dc.w    135,127,120,113,000
+            dc.w    538,508,480,453,428,404,381,360
+            dc.w    339,320,302,285,269,254,240,226
+            dc.w    214,202,190,180,170,160,151,143
+            dc.w    135,127,120,113,000
 muzakoffset:    dc.l    0
 lev6save:   dc.l    0
 trkpos:     dc.l    0
