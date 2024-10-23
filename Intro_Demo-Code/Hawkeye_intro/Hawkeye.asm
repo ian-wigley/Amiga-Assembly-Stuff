@@ -171,34 +171,34 @@ copper:
     dc.w DDFSTOP,$00cc
     dc.w BPL1MOD,$0000
     dc.w BPL2MOD,$0000
-    dc.w $00e0
+    dc.w BPL1PTH
 bplOneHigh:
     dc.w $0000
-    dc.w $00e2
+    dc.w BPL1PTL
 bplOneLow:
     dc.w $0000
-    dc.w $00e4
+    dc.w BPL2PTH
 bplTwoHigh:
     dc.w $0000
-    dc.w $00e6
+    dc.w BPL2PTL
 bplTwoLow:
     dc.w $0000
-    dc.w $00e8
+    dc.w BPL3PTH
 bplThreeHigh:
     dc.w $0000
-    dc.w $00ea
+    dc.w BPL3PTL
 bplThreeLow:
     dc.w $0000
-    dc.w $00ec
+    dc.w BPL4PTH
 bplFourHigh:
     dc.w $0000
-    dc.w $00ee
+    dc.w BPL4PTL
 bplFourLow:
     dc.w $0000
-    dc.w $00f0
+    dc.w BPL5PTH
 bplFiveHigh:
     dc.w $0000
-    dc.w $00f2
+    dc.w BPL5PTL
 bplFiveLow:
     dc.w $0000
     dc.w DIWSTRT,$2702
@@ -237,8 +237,6 @@ bplFiveLow:
     dc.w COLOR31,$0fe0
 	
     dc.w $ffe1,$fffe
-;    dc.w $01fe,$0000
-;    dc.w $0011,$fffe
     dc.w $0801,$fffe
 
     dc.w BPLCON0,$0000
