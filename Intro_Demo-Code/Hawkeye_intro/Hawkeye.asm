@@ -705,18 +705,18 @@ numpat:     dc.w    0
 enbits:     dc.w    0
 timpos:     dc.w    0
 
-; Blitter Scroll ($00068392)
+; Blitter Scroll
 scroll:
     movem.l d0-d6/a0-a6,-(a7)
 rollon:
     lea $dff000,a0
-    move.l #$70000,BLTAPT(a0)
-    move.l #$6fffe,BLTDPT(a0)
-    clr.l BLTAMOD(a0)
-    move.l #$ffffffff,BLTAFWM(a0)
-    move.w #$c9f0,BLTCON0(a0)
-    clr.w BLTCON1(a0)
-    move.w #$0cd7,BLTSIZE(a0)
+    move.l #$70000,BLTAPT(a0)       ; Copy Source
+    move.l #$6fffe,BLTDPT(a0)       ; Copy Destination
+    clr.l BLTAMOD(a0)               ; Modulo = 0 
+    move.l #$ffffffff,BLTAFWM(a0)   ; Copy everything
+    move.w #$c9f0,BLTCON0(a0)       ; Channels
+    clr.w BLTCON1(a0)               ; Copy direction (ASC)
+    move.w #$0cd7,BLTSIZE(a0)       ; Start the blit
 bw:
     btst #$0006,DMACONR(a0)
     bne bw
