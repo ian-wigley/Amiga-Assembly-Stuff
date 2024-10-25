@@ -254,14 +254,16 @@ barOne:
     dc.w $0b01,$fffe
     dc.w COLOR0,$0000
     dc.w $0c01,$fffe
-    dc.w $0100,$1000
+    dc.w BPLCON0,$1000
     dc.w COLOR1,$0111
-    dc.w $00e0
+
+    dc.w BPL1PTH
 chrBitPlaneOneHigh:
     dc.w $0007
-    dc.w $00e2
+    dc.w BPL1PTL
 chrBitPlaneOneLow:
     dc.w $0000
+
     dc.w $0d01,$ff00
     dc.w COLOR1,$0222
     dc.w $0e01,$fffe
