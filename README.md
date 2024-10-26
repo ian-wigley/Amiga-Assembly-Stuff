@@ -7,4 +7,4 @@ JetPac for the Amiga (unfinished game started in 2020).
 Intro/Demo code (found on old floppy discs ... written sometime in the late 1980's).
 <br>
 <br>
-I'm hoping to update some of the code and add more examples as when I have time.
+I'm hoping to update some of the code and add more examples as and when I have the time.
