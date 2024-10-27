@@ -718,7 +718,7 @@ rollon:
     move.l #$ffffffff,BLTAFWM(a0)   ; Copy everything
     move.w #$c9f0,BLTCON0(a0)       ; Channels
     clr.w BLTCON1(a0)               ; Copy direction (ASC)
-    move.w #$0cd7,BLTSIZE(a0)       ; Start the blit
+    move.w #64<<6+21,BLTSIZE(a0)    ; Start the blit
 bw:
     btst #$0006,DMACONR(a0)
     bne bw
@@ -783,5 +783,10 @@ data:
 image:
     incbin "Dev:Intro_Demo-Code/Hawkeye_intro/hawk.raw"
 
-screen:
-     blk.l 20480,0
+scroll_memory_pointer:
+    dc.l screen
+
+    section Data,BSS_C
+
+screen:	
+    ds.b (352*32*4)/8
