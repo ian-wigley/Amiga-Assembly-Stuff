@@ -10,16 +10,17 @@
     section text,code_c
 
 start:
-    move.l 4.w,a6           ; Get base of exec lib
-    lea gfxlib(pc),a1       ; Address of gfxlib string to a1
-    jsr -408(a6)            ; Call OpenLibrary()
-    move.l d0,gfxbase       ; Save base of graphics.library
-    bsr configureBitPlanes
+    move.l  4.w,a6             ; Get base of exec lib
+    lea     gfxlib(pc),a1      ; Address of gfxlib string to a1
+    jsr     -408(a6)           ; Call OpenLibrary()
+    move.l  d0,gfxbase         ; Save base of graphics.library
+    bsr     configureBitPlanes
 	
     lea     $dff000,a5         ; set the hardware registers base address to a5
     lea.l   copper,a0          ; set the copper list pointer in a0
     move.l  a0,COP1LC(a5)      ; Set the copper list pointer into COP1LC (copper list one hardware address), effectively move.w a0,$dff080
-    move.w  #$8080,DMACON(a5)  ; enable bit 7 (copper DMA active) and 15 (DMA active), effectively move.w #$8080,$dff096
+;    move.w  #$8080,DMACON(a5)  ; enable bit 7 (copper DMA active) and 15 (DMA active), effectively move.w #$8080,$dff096
+    move.w  #$80C0,DMACON(a5)  ; Enable Copper and Blitter DMA
     move.w  #$8010,INTENA(a5)  ; enable copper interrupt
 
     bsr start_muzak
@@ -56,61 +57,71 @@ gfxbase:    dc.l    0
 configureBitPlanes:
 
     lea.l image,a1
-    lea.l bplOneHigh,a3     ; Get a pointer to the $e0 address
-    lea.l bplOneLow,a2      ; Get a pointer to the $e2 address
-    move.l a1,d1            ; Copy pointer address into d1
-    move.w d1,(a2)          ; Copy the lower word into a2 ($e2 address)
-    move.w (a2),d2          ; Copy the data from the pointer into d3
-    swap d1                 ; Flip d1
-    move.w d1,(a3)          ; Copy the lower word into a2 ($e0 address)
-    move.w (a3),d3          ; Copy the data from the pointer into d3
+    lea.l bplOneHigh,a3         ; Get a pointer to the $e0 address
+    lea.l bplOneLow,a2          ; Get a pointer to the $e2 address
+    move.l a1,d1                ; Copy pointer address into d1
+    move.w d1,(a2)              ; Copy the lower word into a2 ($e2 address)
+    move.w (a2),d2              ; Copy the data from the pointer into d3
+    swap d1                     ; Flip d1
+    move.w d1,(a3)              ; Copy the lower word into a2 ($e0 address)
+    move.w (a3),d3              ; Copy the data from the pointer into d3
 
     lea.l image+$2800,a1
-    lea.l bplTwoHigh,a3     ; Get a pointer to the $e4 address
-    lea.l bplTwoLow,a2      ; Get a pointer to the $e6 address
-    move.l a1,d1            ; Copy pointer address into d1
-    move.w d1,(a2)          ; Copy the lower word into a2 ($e4 address)
-    move.w (a2),d2          ; Copy the data from the pointer into d3
-    swap d1                 ; Flip d1
-    move.w d1,(a3)          ; Copy the lower word into a2 ($e6 address)
-    move.w (a3),d3          ; Copy the data from the pointer into d3
+    lea.l bplTwoHigh,a3         ; Get a pointer to the $e4 address
+    lea.l bplTwoLow,a2          ; Get a pointer to the $e6 address
+    move.l a1,d1                ; Copy pointer address into d1
+    move.w d1,(a2)              ; Copy the lower word into a2 ($e4 address)
+    move.w (a2),d2              ; Copy the data from the pointer into d3
+    swap d1                     ; Flip d1
+    move.w d1,(a3)              ; Copy the lower word into a2 ($e6 address)
+    move.w (a3),d3              ; Copy the data from the pointer into d3
 
     lea.l image+$5000,a1
-    lea.l bplThreeHigh,a3   ; Get a pointer to the $e8 address
-    lea.l bplThreeLow,a2    ; Get a pointer to the $ea address
-    move.l a1,d1            ; Copy pointer address into d1
-    move.w d1,(a2)          ; Copy the lower word into a2 ($e8 address)
-    move.w (a2),d2          ; Copy the data from the pointer into d3
-    swap d1                 ; Flip d1
-    move.w d1,(a3)          ; Copy the lower word into a2 ($ea address)
-    move.w (a3),d3          ; Copy the data from the pointer into d3
+    lea.l bplThreeHigh,a3       ; Get a pointer to the $e8 address
+    lea.l bplThreeLow,a2        ; Get a pointer to the $ea address
+    move.l a1,d1                ; Copy pointer address into d1
+    move.w d1,(a2)              ; Copy the lower word into a2 ($e8 address)
+    move.w (a2),d2              ; Copy the data from the pointer into d3
+    swap d1                     ; Flip d1
+    move.w d1,(a3)              ; Copy the lower word into a2 ($ea address)
+    move.w (a3),d3              ; Copy the data from the pointer into d3
 
     lea.l image+$7800,a1
-    lea.l bplFourHigh,a3    ; Get a pointer to the $ec address
-    lea.l bplFourLow,a2     ; Get a pointer to the $ee address
-    move.l a1,d1            ; Copy pointer address into d1
-    move.w d1,(a2)          ; Copy the lower word into a2 ($ec address)
-    move.w (a2),d2          ; Copy the data from the pointer into d3
-    swap d1                 ; Flip d1
-    move.w d1,(a3)          ; Copy the lower word into a2 ($ee address)
-    move.w (a3),d3          ; Copy the data from the pointer into d3
+    lea.l bplFourHigh,a3        ; Get a pointer to the $ec address
+    lea.l bplFourLow,a2         ; Get a pointer to the $ee address
+    move.l a1,d1                ; Copy pointer address into d1
+    move.w d1,(a2)              ; Copy the lower word into a2 ($ec address)
+    move.w (a2),d2              ; Copy the data from the pointer into d3
+    swap d1                     ; Flip d1
+    move.w d1,(a3)              ; Copy the lower word into a2 ($ee address)
+    move.w (a3),d3              ; Copy the data from the pointer into d3
 
     lea.l image+$a000,a1
-    lea.l bplFiveHigh,a3    ; Get a pointer to the $f0 address
-    lea.l bplFiveLow,a2     ; Get a pointer to the $f2 address
-    move.l a1,d1            ; Copy pointer address into d1
-    move.w d1,(a2)          ; Copy the lower word into a2 ($f0 address)
-    move.w (a2),d2          ; Copy the data from the pointer into d3
-    swap d1                 ; Flip d1
-    move.w d1,(a3)          ; Copy the lower word into a2 ($f2 address)
-    move.w (a3),d3          ; Copy the data from the pointer into d3
+    lea.l bplFiveHigh,a3        ; Get a pointer to the $f0 address
+    lea.l bplFiveLow,a2         ; Get a pointer to the $f2 address
+    move.l a1,d1                ; Copy pointer address into d1
+    move.w d1,(a2)              ; Copy the lower word into a2 ($f0 address)
+    move.w (a2),d2              ; Copy the data from the pointer into d3
+    swap d1                     ; Flip d1
+    move.w d1,(a3)              ; Copy the lower word into a2 ($f2 address)
+    move.w (a3),d3              ; Copy the data from the pointer into d3
 
+    lea.l scroll_memory_pointer,a1
+    lea.l chrBitPlaneOneHigh,a3 ; Get a pointer to the $e0 address
+    lea.l chrBitPlaneOneLow,a2  ; Get a pointer to the $e2 address
+    move.l a1,d1                ; Copy pointer address into d1
+    move.w d1,(a2)              ; Copy the lower word into a2 ($e4 address)
+    move.w (a2),d2              ; Copy the data from the pointer into d3
+    swap d1                     ; Flip d1
+    move.w d1,(a3)              ; Copy the lower word into a2 ($e6 address)
+    move.w (a3),d3              ; Copy the data from the pointer into d3
     rts
 
 colours:
     dc.l colourDataStart
 count:
     dc.l 0,0
+
 
 fader:
     clr.l d0
@@ -164,7 +175,7 @@ colourDataStart:
 copper:
     dc.w BPLCON3,$0000
     dc.w FMODE, $0000 ; AGA compatible
-    dc.w DMACON,$0020
+;    dc.w DMACON,$0020
     dc.w BPLCON0,$5000
     dc.w BPLCON1,$0000
     dc.w DDFSTRT,$0034
@@ -254,6 +265,7 @@ barOne:
     dc.w $0b01,$fffe
     dc.w COLOR0,$0000
     dc.w $0c01,$fffe
+
     dc.w BPLCON0,$1000
     dc.w COLOR1,$0111
 
@@ -670,7 +682,7 @@ ok4:    move.l  (a7)+,d0
     move.w  6(a3,d4),8(a6)  ;replength = sndlength
 chan2:  cmp.w   #0,(a6)
     beq.s   chan4           ;no new note set !
-    move.w  22(a6),$dff096      ;clear dma
+    move.w  22(a6),$dff096  ;clear dma
     cmp.w   #0,14(a6)
     bne.s   chan3           ;no oneshot-sample
     move.w  #1,14(a6)       ;allow resume (later)
@@ -712,24 +724,34 @@ scroll:
     movem.l d0-d6/a0-a6,-(a7)
 rollon:
     lea $dff000,a0
-    move.l #$70000,BLTAPT(a0)       ; Copy Source
-    move.l #$6fffe,BLTDPT(a0)       ; Copy Destination
-    clr.l BLTAMOD(a0)               ; Modulo = 0 
-    move.l #$ffffffff,BLTAFWM(a0)   ; Copy everything
-    move.w #$c9f0,BLTCON0(a0)       ; Channels
-    clr.w BLTCON1(a0)               ; Copy direction (ASC)
-    move.w #64<<6+21,BLTSIZE(a0)    ; Start the blit
+    move.l #scroll_memory_pointer,BLTAPT(a0) ; Source
+    move.l #scroll_memory_pointer-2,BLTDPT(a0)   ; Destination
+    clr.l BLTAMOD(a0)                  ; Modulo = 0 
+    move.l #$ffffffff,BLTAFWM(a0)      ; Copy everything
+    move.w #$c9f0,BLTCON0(a0)          ; Channels
+    clr.w BLTCON1(a0)                  ; Copy direction (ASC)
+    move.w #64<<6+21,BLTSIZE(a0)       ; Start the blit
+	
+    ; BIT#  15,14,13,12,11,10,09,08,07,06,05,04,03,02,01,00
+    ;       -----------------------------------------------
+    ;       h9 h8 h7 h6 h5 h4 h3 h2 h1 h0,w5 w4 w3 w2 w1 w0
+    ; 
+    ; h=height=vertical lines (10 bits=1024 lines max)
+    ; w=width=horizontal pixels (6 bits=64 words=1024 pixels max)
+
 bw:
     btst #$0006,DMACONR(a0)
     bne bw
+	
     sub.b #1,bufleft
     bne scrlend
-    move.b #8,bufleft
+    move.b #8,bufleft                  ; Space between chrs
     clr.l d0
     clr.l d1
     lea wachrs,a2
     lea ekschr,a3
-    lea $70030,a4
+    lea scroll_memory_pointer+48,a4
+	
     move.l textadr,a1
     move.b (a1)+,d1
     cmpi.b #$23,(a1)
@@ -790,3 +812,4 @@ scroll_memory_pointer:
 
 screen:	
     ds.b (352*32*4)/8
+
