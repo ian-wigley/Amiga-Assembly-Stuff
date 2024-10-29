@@ -19,7 +19,6 @@ start:
     lea     $dff000,a5         ; set the hardware registers base address to a5
     lea.l   copper,a0          ; set the copper list pointer in a0
     move.l  a0,COP1LC(a5)      ; Set the copper list pointer into COP1LC (copper list one hardware address), effectively move.w a0,$dff080
-;    move.w  #$8080,DMACON(a5)  ; enable bit 7 (copper DMA active) and 15 (DMA active), effectively move.w #$8080,$dff096
     move.w  #$80C0,DMACON(a5)  ; Enable Copper and Blitter DMA
     move.w  #$8010,INTENA(a5)  ; enable copper interrupt
 
@@ -265,17 +264,17 @@ barOne:
     dc.w $0b01,$fffe
     dc.w COLOR0,$0000
     dc.w $0c01,$fffe
-
+	
     dc.w BPLCON0,$1000
     dc.w COLOR1,$0111
-
+	
     dc.w BPL1PTH
 chrBitPlaneOneHigh:
     dc.w $0007
     dc.w BPL1PTL
 chrBitPlaneOneLow:
     dc.w $0000
-
+	
     dc.w $0d01,$ff00
     dc.w COLOR1,$0222
     dc.w $0e01,$fffe
@@ -722,15 +721,14 @@ timpos:     dc.w    0
 ; Blitter Scroll
 scroll:
     movem.l d0-d6/a0-a6,-(a7)
-rollon:
     lea $dff000,a0
     move.l #scroll_memory_pointer,BLTAPT(a0) ; Source
     move.l #scroll_memory_pointer-2,BLTDPT(a0)   ; Destination
     clr.l BLTAMOD(a0)                  ; Modulo = 0 
     move.l #$ffffffff,BLTAFWM(a0)      ; Copy everything
-    move.w #$c9f0,BLTCON0(a0)          ; Channels
+    move.w #$c9f0,BLTCON0(a0)          ; Copy Type
     clr.w BLTCON1(a0)                  ; Copy direction (ASC)
-    move.w #64<<6+21,BLTSIZE(a0)       ; Start the blit
+    move.w #64<<6+18,BLTSIZE(a0)       ; Start the blit
 	
     ; BIT#  15,14,13,12,11,10,09,08,07,06,05,04,03,02,01,00
     ;       -----------------------------------------------
@@ -739,9 +737,10 @@ rollon:
     ; h=height=vertical lines (10 bits=1024 lines max)
     ; w=width=horizontal pixels (6 bits=64 words=1024 pixels max)
 
-bw:
     btst #$0006,DMACONR(a0)
-    bne bw
+blitter_wait:
+    btst #$0006,DMACONR(a0)
+    bne blitter_wait
 	
     sub.b #1,bufleft
     bne scrlend
