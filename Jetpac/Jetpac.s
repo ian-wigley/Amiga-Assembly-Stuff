@@ -1,4 +1,4 @@
-           section    flashtro,code_c
+           section    texts,code_c
 
 begin:
            bsr        setupHardware
@@ -36,11 +36,11 @@ setupHardware:
            rts
 
 mainloop:
-           move.b $bfec01,d0       ; Check if the escape Key
-           eor.b #$ff,d0           ; has been pressed
-           ror.b #1,d0
-           cmp.b #$45,d0           ; No, continue
-           beq.s exit
+           move.b     $bfec01,d0                    ; Check if the escape Key
+           eor.b      #$ff,d0                       ; has been pressed
+           ror.b      #1,d0
+           cmp.b      #$45,d0                       ; No, continue
+           beq.s      exit
            ; Check if either mouse button/joystick 1 or 2 pressed, if so exit
            btst.b     #6,$bfe001
            beq        exit
@@ -370,7 +370,7 @@ background:
            
 ;****************************************************************** END of sprite.asm ***********************************************
 
-           section    flashtro,code_c
+           section    texts,code_c
 
 ;****************************************************************** START of input.asm ***********************************************
 
